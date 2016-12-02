@@ -1,2 +1,2 @@
-# ned
+# ned (WIP)
 Javascript node editor

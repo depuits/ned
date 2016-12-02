@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <script src="ned.js"></script>
+
+    <style>
+      #svg {
+        width: 75%;
+        height: 100%;
+      }
+
+      .NodeContainer > .Background {
+        fill: blue;
+        rx: 15px;
+        ry: 15px;
+      }
+
+      .NodeContainer > .Header > text {
+        text-anchor: middle;
+        fill: white;
+      }
+
+      .NodeContainer > .Header > rect {
+        fill: red;
+        rx: 15px;
+        ry: 15px;
+      }
+
+      .NodeContainer .Input > circle,
+      .NodeContainer .Output > circle {
+        fill: red;
+        r: 6px;
+        cx: 6px;
+        cy: 6px;
+      }
+
+      .NodeContainer .Input > circle:hover,
+      .NodeContainer .Output > circle:hover {
+        stroke: green;
+        stroke-width: 4px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <svg id="svg"></svg>
+
+    <script>
+      var editor = Object.create(Ned);
+      editor.init("svg");
+
+      var n1 = Object.create(Ned.Node);
+      n1.init (editor, "Test node");
+      n1.position = { x: 100, y: 180};
+
+      var n1i1 = n1.addInput("");
+      var n1i2 = n1.addInput("Input B");
+
+      var n4o1 = n1.addOutput("Output A");
+      var n4o2 = n1.addOutput("Output B");
+
+      var n2 = Object.create(Ned.Node);
+      n2.init (editor, "Test");
+    </script>
+  </body>
+</html>
