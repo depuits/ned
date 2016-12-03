@@ -8,12 +8,6 @@ var Ned = {
 		this.singleInput = false;
 		this.singleOutput = false;
 
-		// add to css
-		this.pathWidth = 2;
-		this.pathColor = "#999999";
-		this.pathColorA = "#86d530";
-		this.pathDashArray = "20,5,5,5,5,5";
-
 		if (!(svg instanceof SVGElement)) {
 			svg = document.getElementById(svg);
 		}
@@ -193,7 +187,7 @@ Ned.Connector = {
 
 		// ****************** dot ******************
 		this.eDot = document.createElementNS(this.editor.svg.ns,"circle");
-		this.eDot.addEventListener("click", (e) => { this.beginConnDrag(e); });
+		this.eDot.addEventListener("mousedown", (e) => { this.beginConnDrag(e); });
 		this.eRoot.appendChild(this.eDot);
 
 		this.updatePosition();
@@ -226,10 +220,11 @@ Ned.Connector = {
 	},
 	get position() {
 		var rect = this.eRoot.getBoundingClientRect();
+		console.log(rect);
 		// do we need to add the css pos? cx, cy
 		return {
-			x: rect.x,
-			y: rect.y
+			x: rect.left,
+			y: rect.top
 		};
 	},
 
@@ -275,12 +270,7 @@ Ned.Path = {
 		this.output = conn.isInput ? null : conn;
 
 		this.ePath = document.createElementNS(this.editor.svg.ns, "path");
-		this.ePath.setAttribute("class", "Outputs");
-		// TODO move as much to css
-		this.ePath.setAttribute("stroke-dasharray", this.editor.pathDashArray);
-		this.ePath.setAttribute("stroke-width", this.editor.pathWidth);
-		this.ePath.setAttribute("stroke", this.editor.pathColor);
-		this.ePath.setAttribute("fill", "none");
+		this.ePath.setAttribute("class", "path");
 
 		this.editor.svg.appendChild(this.ePath); //TODO change svg to paths child svg or group
 
@@ -299,6 +289,7 @@ Ned.Path = {
 	},
 	updateWithPos(x, y) {
 		// here we asume only one node is set or deemed important
+		//TODO fix if input then we must use this pos as last
 		var pos = (this.input || this.output).position;
 		this.setCurve (pos.x, pos.y, x, y);
 	},
