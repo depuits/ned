@@ -1,3 +1,12 @@
+/*
+ * sample color sheme
+ * #404E5C
+ * #4F6272
+ * #B7C3F3
+ * #DD7596
+ * #CF1259
+ */
+
 #svg {
 	position: absolute;
 	top: 50px;
@@ -7,25 +16,25 @@
 }
 
 .Nodegroup > .NodeContainer > .Background {
-	fill: blue;
+	fill: #4F6272;
 	rx: 15px;
 	ry: 15px;
 }
 
 .Nodegroup > .NodeContainer > .Header > text {
 	text-anchor: middle;
-	fill: white;
+	fill: #B7C3F3;
 }
 
 .Nodegroup > .NodeContainer > .Header > rect {
-	fill: red;
+	fill: #404E5C;
 	rx: 15px;
 	ry: 15px;
 }
 
 .Nodegroup > .NodeContainer .Input > circle,
 .Nodegroup > .NodeContainer .Output > circle {
-	fill: red;
+	fill: #404E5C;
 	r: 6px;
 	cx: 0px;
 	cy: 6px;
@@ -38,7 +47,7 @@
 .Nodegroup > .NodeContainer > .Inputs > .Input > .ConnHover,
 .Nodegroup > .NodeContainer > .Outputs > .Output > circle:hover,
 .Nodegroup > .NodeContainer > .Outputs > .Output > .ConnHover {
-	stroke: green;
+	stroke: #B7C3F3;
 	stroke-width: 4px;
 }
 
@@ -52,12 +61,12 @@
 .PathGroup > .Path { /* change to final container */
 	stroke-dasharray: 20,5,5,5,5,5;
 	stroke-width: 2px;
-	stroke: #999;
+	stroke: #B7C3F3;
 	fill: none;
 }
 
 .PathGroup > .Path:hover { /* change to final container */
 	stroke-width: 3px;
-	stroke: #955;
+	stroke: #CF1259;
 	fill: none;
 }

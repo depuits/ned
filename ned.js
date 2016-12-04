@@ -204,11 +204,6 @@ Ned.Connector = {
 		this.eDot.addEventListener("mouseleave", (e) => { this.eDot.removeAttribute("class"); });
 		this.eRoot.appendChild(this.eDot);
 
-		/*if (!this.isInput) {
-			var rect = this.eRoot.getBoundingClientRect();
-			this.eRoot.setAttribute("x", -rect.width);
-		}*/
-
 		this.updatePosition();
 	},
 
