@@ -225,15 +225,16 @@ Ned.Connector = {
 	},
 
 	get singlePath() {
-		return (this.isInput) ? this.editor.singleInput :this.editor.singleOutput;
+		return (this.isInput) ? this.editor.singleInput : this.editor.singleOutput;
 	},
 	get position() {
 		var rect = this.eRoot.getBoundingClientRect();
-		// do we need to add the css pos? cx, cy
-		// and keep the svg position in mind
+		var rootRect = this.editor.svg.getBoundingClientRect();
+		// we need to keep the svg position in mind
+		// and center it 
 		return {
-			x: rect.left,
-			y: rect.top
+			x: (rect.left - rootRect.left) + (rect.width / 2),
+			y: (rect.top - rootRect.top) + (rect.height / 2)
 		};
 	},
 
@@ -247,7 +248,9 @@ Ned.Connector = {
 		var onConnDragMouseMove = (e) => {
 			e.stopPropagation();
 			e.preventDefault();
-			path.updateWithPos({x: e.pageX, y: e.pageY});
+			var rootRect = this.editor.svg.getBoundingClientRect();
+			var pos = {	x: (e.pageX - rootRect.left), y: (e.pageY - rootRect.top + 3) };
+			path.updateWithPos(pos);
 		}
 		
 		var onConnDragMouseUp = (e) => {
@@ -261,6 +264,8 @@ Ned.Connector = {
 					path.destroy ();
 				}
 				else {
+					// check if we don't already have a path like this
+
 					path.setFinalConn(conn);
 					this.paths.push(path);
 				}
