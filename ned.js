@@ -270,7 +270,6 @@ Ned.Connector = {
 					if (this.paths.find((p) => path.equals(p))) {
 						// this path already exists so delete it
 						path.destroy ();
-						console.log("path exists");
 					} else {
 						// remember the new path
 						//add conn to path to update it
@@ -279,7 +278,6 @@ Ned.Connector = {
 					}
 				}
 			} else {
-				//dispose the path
 				path.destroy ();
 			}
 
@@ -314,7 +312,6 @@ Ned.Path = {
 	destroy() {
 		this.editor.svg.removeChild(this.ePath); //TODO change svg to paths child svg or group
 		this.ePath = null;
-		console.log("path destroyed");
 	},
 
 	setFinalConn(conn) {
