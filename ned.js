@@ -281,8 +281,10 @@ Ned.Connector = {
 						// this path already exists so delete it
 						path.destroy ();
 					} else {
+						// TODO add single input/output logic here
+
 						// remember the new path
-						//add conn to path to update it
+						//add path to conn paths list to update it
 						this.paths.push(path);
 						conn.paths.push(path);
 					}
@@ -320,6 +322,8 @@ Ned.Path = {
 	},
 
 	destroy() {
+		if (this.input) this.input.removePath(this);
+		if (this.output) this.output.removePath(this);
 		this.editor.pathGroup.removeChild(this.ePath);
 		this.ePath = null;
 	},
@@ -337,8 +341,6 @@ Ned.Path = {
 	},
 
 	onClicked(e) {
-		this.input.removePath(this);
-		this.output.removePath(this);
 		this.destroy();
 	},
 
