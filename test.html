@@ -1,72 +1,28 @@
 <html>
-  <head>
-    <script src="ned.js"></script>
+<head>
+	<script src="ned.js"></script>
+	<link rel="stylesheet" type="text/css" href="ned.css">
+</head>
+<body>
+	<svg id="svg"></svg>
 
-    <style>
-      #svg {
-        width: 75%;
-        height: 100%;
-      }
+	<script>
+		var editor = Object.create(Ned);
+		editor.init("svg");
 
-      .NodeContainer > .Background {
-        fill: blue;
-        rx: 15px;
-        ry: 15px;
-      }
+		var n1 = Object.create(Ned.Node);
+		n1.init (editor, "Test node");
+		n1.position = { x: 100, y: 180};
 
-      .NodeContainer > .Header > text {
-        text-anchor: middle;
-        fill: white;
-      }
+		var n1i1 = n1.addInput("");
+		var n1i2 = n1.addInput("Input B");
 
-      .NodeContainer > .Header > rect {
-        fill: red;
-        rx: 15px;
-        ry: 15px;
-      }
+		var n1o1 = n1.addOutput("Output A");
+		var n1o2 = n1.addOutput("Output B");
 
-      .NodeContainer .Input > circle,
-      .NodeContainer .Output > circle {
-        fill: red;
-        r: 6px;
-        cx: 6px;
-        cy: 6px;
-      }
-
-      .NodeContainer .Input > circle:hover,
-      .NodeContainer .Output > circle:hover {
-        stroke: green;
-        stroke-width: 4px;
-      }
-
-      svg > .path { /* change to final container */
-        stroke-dasharray: 20,5,5,5,5,5;
-        stroke-width: 2px;
-        stroke: #999999;
-        fill: none;
-      }
-
-    </style>
-  </head>
-  <body>
-    <svg id="svg"></svg>
-
-    <script>
-      var editor = Object.create(Ned);
-      editor.init("svg");
-
-      var n1 = Object.create(Ned.Node);
-      n1.init (editor, "Test node");
-      n1.position = { x: 100, y: 180};
-
-      var n1i1 = n1.addInput("");
-      var n1i2 = n1.addInput("Input B");
-
-      var n4o1 = n1.addOutput("Output A");
-      var n4o2 = n1.addOutput("Output B");
-
-      var n2 = Object.create(Ned.Node);
-      n2.init (editor, "Test");
-    </script>
-  </body>
+		var n2 = Object.create(Ned.Node);
+		n2.init (editor, "Start");
+		var n2o1 = n2.addOutput("Output");
+	</script>
+</body>
 </html>

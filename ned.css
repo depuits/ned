@@ -1,0 +1,55 @@
+#svg {
+	/*position: absolute;
+	top: 50px;*/
+	width: 75%;
+	height: 100%;
+}
+
+.NodeContainer > .Background {
+	fill: blue;
+	rx: 15px;
+	ry: 15px;
+}
+
+.NodeContainer > .Header > text {
+	text-anchor: middle;
+	fill: white;
+}
+
+.NodeContainer > .Header > rect {
+	fill: red;
+	rx: 15px;
+	ry: 15px;
+}
+
+.NodeContainer .Input > circle,
+.NodeContainer .Output > circle {
+	fill: red;
+	r: 6px;
+	cx: 6px;
+	cy: 6px;
+}
+
+/* hover is for when we are moving over a connecter 
+ * while connhover is for when you can make a connection to an other node
+ */
+.NodeContainer .Input > circle:hover,
+.NodeContainer .Input > .ConnHover,
+.NodeContainer .Output > circle:hover,
+.NodeContainer .Output > .ConnHover {
+	stroke: green;
+	stroke-width: 4px;
+}
+
+svg > .path { /* change to final container */
+	stroke-dasharray: 20,5,5,5,5,5;
+	stroke-width: 2px;
+	stroke: #999;
+	fill: none;
+}
+
+svg > .path:hover { /* change to final container */
+	stroke-width: 3px;
+	stroke: #955;
+	fill: none;
+}

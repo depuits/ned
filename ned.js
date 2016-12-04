@@ -187,7 +187,10 @@ Ned.Connector = {
 
 		// ****************** dot ******************
 		this.eDot = document.createElementNS(this.editor.svg.ns,"circle");
+		this.eDot.ref = this; // we set the refference on the object we want to be able to connect to
 		this.eDot.addEventListener("mousedown", (e) => { this.beginConnDrag(e); });
+		this.eDot.addEventListener("mouseenter", (e) => { this.eDot.setAttribute("class", "ConnHover"); });
+		this.eDot.addEventListener("mouseleave", (e) => { this.eDot.removeAttribute("class"); });
 		this.eRoot.appendChild(this.eDot);
 
 		this.updatePosition();
@@ -205,6 +208,12 @@ Ned.Connector = {
 	updatePaths() {
 		for(let p of this.paths) p.update();
 	},
+	removePath(p) {
+		var index = this.paths.indexOf(p);
+		if(index != -1) {
+			this.paths.splice(index, 1);
+		}
+	},
 
 	get editor() {
 		return this.node.editor;
@@ -220,8 +229,8 @@ Ned.Connector = {
 	},
 	get position() {
 		var rect = this.eRoot.getBoundingClientRect();
-		console.log(rect);
 		// do we need to add the css pos? cx, cy
+		// and keep the svg position in mind
 		return {
 			x: rect.left,
 			y: rect.top
@@ -234,20 +243,32 @@ Ned.Connector = {
 
 		var path = Object.create(Ned.Path);
 		path.init(this);
-		//this.paths.push(path); //Do we push the path here or can we wait ti'll the path is final
 
 		var onConnDragMouseMove = (e) => {
 			e.stopPropagation();
 			e.preventDefault();
-			path.updateWithPos(e.pageX, e.pageY);
+			path.updateWithPos({x: e.pageX, y: e.pageY});
 		}
 		
 		var onConnDragMouseUp = (e) => {
 			e.stopPropagation();
 			e.preventDefault();
 
-			//Does e.target equal an node were over?
-			console.log(e.target);
+			var conn = e.target.ref; // get the saved refence to connect
+			if (Ned.Connector.isPrototypeOf(conn)) {
+				if (this.isInput === conn.isInput) {
+					//can't connect 2 inputs or 2 outputs
+					path.destroy ();
+				}
+				else {
+					path.setFinalConn(conn);
+					this.paths.push(path);
+				}
+			}
+			else {
+				//dispose the path
+				path.destroy ();
+			}
 			//TODO check connections and remove or apply the final path
 			//path.output.removePath(NEditor.dragItem);
 
@@ -270,28 +291,43 @@ Ned.Path = {
 		this.output = conn.isInput ? null : conn;
 
 		this.ePath = document.createElementNS(this.editor.svg.ns, "path");
-		this.ePath.setAttribute("class", "path");
+		this.ePath.setAttribute("class", "path");		
+		this.ePath.addEventListener("click", (e) => { this.onClicked(e); });
 
 		this.editor.svg.appendChild(this.ePath); //TODO change svg to paths child svg or group
 
 		var pos = conn.position;
-		this.setCurve(pos.x, pos.y, pos.x, pos.y);
+		this.updateWithPos(pos);
+	},
+
+	destroy() {
+		this.editor.svg.removeChild(this.ePath); //TODO change svg to paths child svg or group
+		this.ePath = null;
+	},
+
+	setFinalConn(conn) {
+		//add conn to path to update it
+		conn.paths.push(this);
+		// if the input is set then set the output and vice versa
+		if (this.input) this.output = conn;
+		else this.input = conn;
+
+		this.update();
+	},
+
+	onClicked(e) {
+		this.input.removePath(this);
+		this.output.removePath(this);
+		this.destroy();
 	},
 
 	update() {
-		if (this.input && this.output) {
-			var pos1 = this.input.position;
-			var pos2 = this.output.position;
-			this.setCurve (pos1.x, pos1.y, pos2.x, pos2.y);
-		} else {
-			console.error("One or more connectors from path not set.");
-		}
+		this.updateWithPos ((this.input || this.output).position);
 	},
-	updateWithPos(x, y) {
-		// here we asume only one node is set or deemed important
-		//TODO fix if input then we must use this pos as last
-		var pos = (this.input || this.output).position;
-		this.setCurve (pos.x, pos.y, x, y);
+	updateWithPos(pos) {
+		var pos1 = this.output ? this.output.position : pos;
+		var pos2 = this.input ? this.input.position : pos;
+		this.setCurve (pos1.x, pos1.y, pos2.x, pos2.y);
 	},
 
 	setCurve(x1, y1, x2, y2) {
