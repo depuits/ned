@@ -22,7 +22,12 @@
 
 		var n2 = Object.create(Ned.Node);
 		n2.init (editor, "Start");
-		var n2o1 = n2.addOutput("Output");
+		var n2o1 = n2.addOutput("Output")
+
+		var n3 = Object.create(Ned.Node);
+		n3.init (editor, "Other test");
+		var n3i1 = n3.addInput("Input B");
+		var n3o1 = n3.addOutput("Output");
 	</script>
 </body>
 </html>

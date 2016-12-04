@@ -265,18 +265,23 @@ Ned.Connector = {
 					path.destroy ();
 				}
 				else {
-					// check if we don't already have a path like this
-
 					path.setFinalConn(conn);
-					this.paths.push(path);
+					// check if we don't already have a path like this
+					if (this.paths.find((p) => path.equals(p))) {
+						// this path already exists so delete it
+						path.destroy ();
+						console.log("path exists");
+					} else {
+						// remember the new path
+						//add conn to path to update it
+						this.paths.push(path);
+						conn.paths.push(path);
+					}
 				}
-			}
-			else {
+			} else {
 				//dispose the path
 				path.destroy ();
 			}
-			//TODO check connections and remove or apply the final path
-			//path.output.removePath(NEditor.dragItem);
 
 			window.removeEventListener("mousemove", onConnDragMouseMove);
 			window.removeEventListener("mouseup", onConnDragMouseUp);
@@ -309,16 +314,19 @@ Ned.Path = {
 	destroy() {
 		this.editor.svg.removeChild(this.ePath); //TODO change svg to paths child svg or group
 		this.ePath = null;
+		console.log("path destroyed");
 	},
 
 	setFinalConn(conn) {
-		//add conn to path to update it
-		conn.paths.push(this);
 		// if the input is set then set the output and vice versa
 		if (this.input) this.output = conn;
 		else this.input = conn;
 
 		this.update();
+	},
+
+	equals(p) {
+		return this.input === p.input && this.output === p.output;
 	},
 
 	onClicked(e) {
