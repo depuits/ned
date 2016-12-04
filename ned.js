@@ -248,8 +248,9 @@ Ned.Connector = {
 		var onConnDragMouseMove = (e) => {
 			e.stopPropagation();
 			e.preventDefault();
+			var mouseOffset = 3; // this offset is so the path isn't under the mouse when we release it. Else it isn't possible to get the underlying connector
 			var rootRect = this.editor.svg.getBoundingClientRect();
-			var pos = {	x: (e.pageX - rootRect.left), y: (e.pageY - rootRect.top + 3) };
+			var pos = {	x: (e.pageX - rootRect.left), y: (e.pageY - rootRect.top + mouseOffset) };
 			path.updateWithPos(pos);
 		}
 		
