@@ -2,7 +2,7 @@
 	position: absolute;
 	top: 50px;
 	width: 75%;
-	height: 100%;
+	height: calc(100% - 52px);
 	border: 1px solid #000;
 }
 
@@ -27,7 +27,7 @@
 .Nodegroup > .NodeContainer .Output > circle {
 	fill: red;
 	r: 6px;
-	cx: 6px;
+	cx: 0px;
 	cy: 6px;
 }
 
@@ -40,6 +40,13 @@
 .Nodegroup > .NodeContainer > .Outputs > .Output > .ConnHover {
 	stroke: green;
 	stroke-width: 4px;
+}
+
+.Nodegroup > .NodeContainer > .Inputs {
+	x: 0%;
+}
+.Nodegroup > .NodeContainer > .Outputs {
+	x: 100%;
 }
 
 .PathGroup > .Path { /* change to final container */

@@ -38,6 +38,7 @@ Ned.Node = {
 		// ****************** root ******************
 		this.eRoot = document.createElementNS(ned.svg.ns,"svg");
 		this.eRoot.setAttribute("class", "NodeContainer");
+		this.eRoot.setAttribute("overflow", "visible");
 		ned.nodegroup.appendChild(this.eRoot);
 		this.width = 200;
 		this.height = 100;
@@ -203,12 +204,16 @@ Ned.Connector = {
 		this.eDot.addEventListener("mouseleave", (e) => { this.eDot.removeAttribute("class"); });
 		this.eRoot.appendChild(this.eDot);
 
+		/*if (!this.isInput) {
+			var rect = this.eRoot.getBoundingClientRect();
+			this.eRoot.setAttribute("x", -rect.width);
+		}*/
+
 		this.updatePosition();
 	},
 
 	updatePosition() {
 		var rect = this.eRoot.getBoundingClientRect();
-		if (!this.isInput) this.eRoot.setAttribute("x", -rect.width);
 
 		var i = this.index;
 		var y = (rect.height / 2) + (rect.height * 1.5 * i)
