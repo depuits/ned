@@ -13,6 +13,16 @@ var Ned = {
 		}
 		this.svg = svg;
 		this.svg.ns = this.svg.namespaceURI;
+
+		// group for all node elements
+		this.nodegroup = document.createElementNS(this.svg.ns,"g");
+		this.nodegroup.setAttribute("class", "Nodegroup");
+		this.svg.appendChild(this.nodegroup);
+
+		// group to draw the paths above the nodes
+		this.pathGroup = document.createElementNS(this.svg.ns,"g");
+		this.pathGroup.setAttribute("class", "PathGroup");
+		this.svg.appendChild(this.pathGroup);
 	},
 };
 
@@ -28,7 +38,7 @@ Ned.Node = {
 		// ****************** root ******************
 		this.eRoot = document.createElementNS(ned.svg.ns,"svg");
 		this.eRoot.setAttribute("class", "NodeContainer");
-		ned.svg.appendChild(this.eRoot);
+		ned.nodegroup.appendChild(this.eRoot);
 		this.width = 200;
 		this.height = 100;
 
@@ -137,8 +147,8 @@ Ned.Node = {
 	},
 
 	toTop() {
-		this.editor.svg.removeChild(this.eRoot);
-		this.editor.svg.appendChild(this.eRoot);
+		this.editor.nodegroup.removeChild(this.eRoot);
+		this.editor.nodegroup.appendChild(this.eRoot);
 	},
 
 	beginNodeDrag(e) {
@@ -300,17 +310,17 @@ Ned.Path = {
 		this.output = conn.isInput ? null : conn;
 
 		this.ePath = document.createElementNS(this.editor.svg.ns, "path");
-		this.ePath.setAttribute("class", "path");		
+		this.ePath.setAttribute("class", "Path");		
 		this.ePath.addEventListener("click", (e) => { this.onClicked(e); });
 
-		this.editor.svg.appendChild(this.ePath); //TODO change svg to paths child svg or group
+		this.editor.pathGroup.appendChild(this.ePath);
 
 		var pos = conn.position;
 		this.updateWithPos(pos);
 	},
 
 	destroy() {
-		this.editor.svg.removeChild(this.ePath); //TODO change svg to paths child svg or group
+		this.editor.pathGroup.removeChild(this.ePath);
 		this.ePath = null;
 	},
 

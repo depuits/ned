@@ -3,27 +3,28 @@
 	top: 50px;
 	width: 75%;
 	height: 100%;
+	border: 1px solid #000;
 }
 
-.NodeContainer > .Background {
+.Nodegroup > .NodeContainer > .Background {
 	fill: blue;
 	rx: 15px;
 	ry: 15px;
 }
 
-.NodeContainer > .Header > text {
+.Nodegroup > .NodeContainer > .Header > text {
 	text-anchor: middle;
 	fill: white;
 }
 
-.NodeContainer > .Header > rect {
+.Nodegroup > .NodeContainer > .Header > rect {
 	fill: red;
 	rx: 15px;
 	ry: 15px;
 }
 
-.NodeContainer .Input > circle,
-.NodeContainer .Output > circle {
+.Nodegroup > .NodeContainer .Input > circle,
+.Nodegroup > .NodeContainer .Output > circle {
 	fill: red;
 	r: 6px;
 	cx: 6px;
@@ -33,22 +34,22 @@
 /* hover is for when we are moving over a connecter 
  * while connhover is for when you can make a connection to an other node
  */
-.NodeContainer .Input > circle:hover,
-.NodeContainer .Input > .ConnHover,
-.NodeContainer .Output > circle:hover,
-.NodeContainer .Output > .ConnHover {
+.Nodegroup > .NodeContainer > .Inputs > .Input > circle:hover,
+.Nodegroup > .NodeContainer > .Inputs > .Input > .ConnHover,
+.Nodegroup > .NodeContainer > .Outputs > .Output > circle:hover,
+.Nodegroup > .NodeContainer > .Outputs > .Output > .ConnHover {
 	stroke: green;
 	stroke-width: 4px;
 }
 
-svg > .path { /* change to final container */
+.PathGroup > .Path { /* change to final container */
 	stroke-dasharray: 20,5,5,5,5,5;
 	stroke-width: 2px;
 	stroke: #999;
 	fill: none;
 }
 
-svg > .path:hover { /* change to final container */
+.PathGroup > .Path:hover { /* change to final container */
 	stroke-width: 3px;
 	stroke: #955;
 	fill: none;
