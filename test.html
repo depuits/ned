@@ -1,10 +1,23 @@
 <html>
 <head>
 	<script src="ned.js"></script>
+	<script src="https://ariutta.github.io/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="ned.css">
 </head>
 <body>
-	<svg id="svg"></svg>
+	<svg id="svg">
+		<defs>
+			<pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+				<path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
+			</pattern>
+			<pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+				<rect width="100" height="100" fill="url(#smallGrid)"/>
+				<path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
+			</pattern>
+		</defs>
+
+		<rect width="200%" height="200%" fill="url(#grid)" />
+	</svg>
 
 	<script>
 		var editor = Object.create(Ned);
@@ -30,6 +43,25 @@
 		n3.init (editor, "Other test");
 		var n3i1 = n3.addInput("Input B");
 		var n3o1 = n3.addOutput("Output");
+
+		var panZoom = svgPanZoom(editor.svg, {
+			viewportSelector: '.svg-pan-zoom_viewport', 
+			panEnabled: true, 
+			controlIconsEnabled: false, 
+			zoomEnabled: true, 
+			dblClickZoomEnabled: false, 
+			mouseWheelZoomEnabled: true, 
+			preventMouseEventsDefault: false, 
+			zoomScaleSensitivity: 0.2, 
+			minZoom: 0.5, 
+			maxZoom: 2, 
+			fit: false, 
+			contain: false, 
+			center: false, 
+			refreshRate: 'auto'
+		});
+
+		//handle grid tilling
 	</script>
 </body>
 </html>
