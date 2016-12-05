@@ -10,7 +10,8 @@
 #svg {
 	position: absolute;
 	top: 50px;
-	width: 75%;
+	left: 10px;
+	width: calc(100% - 22px);
 	height: calc(100% - 52px);
 	border: 1px solid #000;
 }
@@ -37,7 +38,20 @@
 	fill: #404E5C;
 	r: 6px;
 	cx: 0px;
-	cy: 6px;
+}
+
+.Nodegroup > .NodeContainer .Input > text,
+.Nodegroup > .NodeContainer .Output > text {
+	fill: #B7C3F3;
+	alignment-baseline: middle;
+}
+.Nodegroup > .NodeContainer .Input > text {
+	transform: translate(10px,0px);
+	text-anchor: start;
+}
+.Nodegroup > .NodeContainer .Output > text {
+	transform: translate(-10px,0px);
+	text-anchor: end;
 }
 
 /* hover is for when we are moving over a connecter 

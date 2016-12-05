@@ -198,11 +198,18 @@ Ned.Connector = {
 		this.eRoot.setAttribute("overflow", "visible");
 		neRoot.appendChild(this.eRoot);
 
+		// ****************** text ******************
+		this.eText = document.createElementNS(this.editor.svg.ns,"text");
+		this.eText.appendChild(document.createTextNode(name));
+		//this.eText.setAttribute("x", "50%");
+		//this.eText.setAttribute("y", headerSize - 4); // padding to the bottom text
+		this.eRoot.appendChild(this.eText);
+
 		// ****************** dot ******************
 		this.eDot = document.createElementNS(this.editor.svg.ns,"circle");
 		this.eDot.ref = this; // we set the refference on the object we want to be able to connect to
 		this.eDot.addEventListener("mousedown", (e) => { this.beginConnDrag(e); });
-		this.eDot.addEventListener("mouseenter", (e) => { this.eDot.setAttribute("class", "ConnHover"); });
+		this.eDot.addEventListener("mouseenter", (e) => { this.eDot.setAttribute("class", "ConnHover"); }); // TODO more addvanced class addition (check wheiter the nodes can connect before adding the class)
 		this.eDot.addEventListener("mouseleave", (e) => { this.eDot.removeAttribute("class"); });
 		this.eRoot.appendChild(this.eDot);
 
@@ -213,7 +220,7 @@ Ned.Connector = {
 		var rect = this.eRoot.getBoundingClientRect();
 
 		var i = this.index;
-		var y = (rect.height / 2) + (rect.height * 1.5 * i)
+		var y = (rect.height) + (rect.height * 1.5 * i)
 		this.eRoot.setAttribute("y", y);
 	},
 
@@ -252,7 +259,7 @@ Ned.Connector = {
 		return (this.isInput) ? this.editor.singleInputs : this.editor.singleOutputs;
 	},
 	get position() {
-		var rect = this.eRoot.getBoundingClientRect();
+		var rect = this.eDot.getBoundingClientRect();
 		var rootRect = this.editor.svg.getBoundingClientRect();
 		// we need to keep the svg position in mind
 		// and center it 
