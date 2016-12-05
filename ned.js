@@ -1,3 +1,5 @@
+"strict mode"
+
 /**************************
  * Main object
  **************************/
@@ -5,8 +7,8 @@ var Ned = {
 	init(svg) {
 		this.svg = null;
 
-		this.singleInput = false;
-		this.singleOutput = false;
+		this.singleInputs = false;
+		this.singleOutputs = false;
 
 		if (!(svg instanceof SVGElement)) {
 			svg = document.getElementById(svg);
@@ -218,8 +220,20 @@ Ned.Connector = {
 	updatePaths() {
 		for(let p of this.paths) p.update();
 	},
-	removePath(p) {
-		var index = this.paths.indexOf(p);
+	addPath(path) {
+		// TODO add single input/output logic here
+		if (this.hasSinglePath) {
+			// destroy all current paths
+			for(let p of this.paths) p.destroy();
+
+			// clear the array
+			this.paths = [];
+		}
+
+		this.paths.push(path);
+	},
+	removePath(path) {
+		var index = this.paths.indexOf(path);
 		if(index != -1) {
 			this.paths.splice(index, 1);
 		}
@@ -234,8 +248,8 @@ Ned.Connector = {
 		return list.indexOf(this);
 	},
 
-	get singlePath() {
-		return (this.isInput) ? this.editor.singleInput : this.editor.singleOutput;
+	get hasSinglePath() {
+		return (this.isInput) ? this.editor.singleInputs : this.editor.singleOutputs;
 	},
 	get position() {
 		var rect = this.eRoot.getBoundingClientRect();
@@ -281,12 +295,10 @@ Ned.Connector = {
 						// this path already exists so delete it
 						path.destroy ();
 					} else {
-						// TODO add single input/output logic here
-
 						// remember the new path
 						//add path to conn paths list to update it
-						this.paths.push(path);
-						conn.paths.push(path);
+						this.addPath(path);
+						conn.addPath(path);
 					}
 				}
 			} else {

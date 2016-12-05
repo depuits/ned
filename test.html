@@ -9,6 +9,8 @@
 	<script>
 		var editor = Object.create(Ned);
 		editor.init("svg");
+		//editor.singleInputs = true;
+		editor.singleOutputs = true;
 
 		var n1 = Object.create(Ned.Node);
 		n1.init (editor, "Test node");
