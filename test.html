@@ -45,7 +45,7 @@
 		var n3o1 = n3.addOutput("Output");
 
 		var panZoom = svgPanZoom(editor.svg, {
-			viewportSelector: '.svg-pan-zoom_viewport', 
+			viewportSelector: ".svg-pan-zoom_viewport", 
 			panEnabled: true, 
 			controlIconsEnabled: false, 
 			zoomEnabled: true, 
@@ -58,10 +58,31 @@
 			fit: false, 
 			contain: false, 
 			center: false, 
-			refreshRate: 'auto'
+			refreshRate: "auto"
 		});
 
+		editor.view = {
+			screenToWorld(pos) {
+				var rect = editor.svg.getBoundingClientRect();
+				var pan = panZoom.getPan();
+				var zoom = panZoom.getZoom();
+				var offset = { x: pan.x + rect.left, y: pan.y + rect.top, };
+
+				return { 
+					x: ((pos.x - pan.x) / zoom) - rect.left, 
+					y: ((pos.y - pan.y) / zoom) - rect.top 
+				};
+			},
+			worldToScreen(pos) {
+				return pos;
+			}
+		};
+
 		//handle grid tilling
+
+		window.addEventListener("resize", (e) => {
+			panZoom.resize();
+		}, true);
 	</script>
 </body>
 </html>

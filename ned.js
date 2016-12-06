@@ -6,6 +6,7 @@
 var Ned = {
 	init(svg) {
 		this.svg = null;
+		this.view = null;
 
 		this.singleInputs = false;
 		this.singleOutputs = false;
@@ -26,6 +27,15 @@ var Ned = {
 		this.pathGroup.setAttribute("class", "PathGroup");
 		this.svg.appendChild(this.pathGroup);
 	},
+
+	screenToWorld(pos) {
+		if (!this.view) return pos;
+		return this.view.screenToWorld(pos);
+	},
+	worldToScreen(pos) {
+		if (!this.view) return pos;
+		return this.view.worldToScreen(pos);
+	}
 };
 
 /**************************
@@ -260,12 +270,19 @@ Ned.Connector = {
 	},
 	get position() {
 		var rect = this.eDot.getBoundingClientRect();
-		var rootRect = this.editor.svg.getBoundingClientRect();
+		console.log(rect);
+		//var rootRect = this.editor.svg.getBoundingClientRect();
 		// we need to keep the svg position in mind
 		// and center it 
+		var screenPos = {
+			x: rect.left //*- rootRect.left*/) + (rect.width / 2),
+			y: rect.top //*- rootRect.top*/) + (rect.height / 2)
+		};
+		var worldPos = this.editor.screenToWorld(screenPos);
+
 		return {
-			x: (rect.left - rootRect.left) + (rect.width / 2),
-			y: (rect.top - rootRect.top) + (rect.height / 2)
+			x: worldPos.x + (rect.width / 2),
+			y: worldPos.y + (rect.height / 2)
 		};
 	},
 
