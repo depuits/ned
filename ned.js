@@ -173,6 +173,11 @@ Ned.Node = {
 	},
 
 	beginNodeDrag(e) {
+		// we can only drag when the left mouse button is pressed
+		if (e.button != 0) {
+			return;
+		}
+
 		e.stopPropagation();
 
 		this.toTop();
