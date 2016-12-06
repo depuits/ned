@@ -47,7 +47,7 @@
 		var panZoom = svgPanZoom(editor.svg, {
 			viewportSelector: ".svg-pan-zoom_viewport", 
 			panEnabled: true, 
-			controlIconsEnabled: false, 
+			controlIconsEnabled: true, 
 			zoomEnabled: true, 
 			dblClickZoomEnabled: false, 
 			mouseWheelZoomEnabled: true, 
@@ -69,8 +69,8 @@
 				var offset = { x: pan.x + rect.left, y: pan.y + rect.top, };
 
 				return { 
-					x: ((pos.x - pan.x) / zoom) - rect.left, 
-					y: ((pos.y - pan.y) / zoom) - rect.top 
+					x: (((pos.x - rect.left) - pan.x) / zoom), 
+					y: (((pos.y - rect.top) - pan.y) / zoom)
 				};
 			},
 			worldToScreen(pos) {

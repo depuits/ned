@@ -272,21 +272,13 @@ Ned.Connector = {
 	},
 	get position() {
 		var rect = this.eDot.getBoundingClientRect();
-		console.log(rect);
-		//var rootRect = this.editor.svg.getBoundingClientRect();
 		// we need to keep the svg position in mind
 		// and center it 
 		var screenPos = {
-			x: rect.left /*- rootRect.left*/ + (rect.width / 2),
-			y: rect.top /*- rootRect.top*/ + (rect.height / 2)
+			x: rect.left + (rect.width / 2),
+			y: rect.top + (rect.height / 2)
 		};
-		var worldPos = this.editor.screenToWorld(screenPos);
-
-		return worldPos;
-		/*return {
-			x: worldPos.x + (rect.width / 2),
-			y: worldPos.y + (rect.height / 2)
-		};*/
+		return this.editor.screenToWorld(screenPos);
 	},
 
 	beginConnDrag(e) {
