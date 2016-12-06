@@ -169,13 +169,15 @@ Ned.Node = {
 
 		this.toTop();
 		var pos = this.position;
-		var offsetX = pos.x - e.pageX;
-		var offsetY = pos.y - e.pageY;
+		var screenPos = this.editor.screenToWorld({ x: e.pageX, y: e.pageY });
+		var offsetX = pos.x - screenPos.x;
+		var offsetY = pos.y - screenPos.y;
 
 		var onNodeDragMouseMove = (e) => {
 			e.stopPropagation();
 			e.preventDefault();
-			this.position = { x: e.pageX + offsetX, y: e.pageY + offsetY };
+			var screenPos = this.editor.screenToWorld({ x: e.pageX, y: e.pageY });
+			this.position = { x: screenPos.x + offsetX, y: screenPos.y + offsetY };
 		};
 
 		var onNodeDragMouseUp = (e) => {
@@ -275,15 +277,16 @@ Ned.Connector = {
 		// we need to keep the svg position in mind
 		// and center it 
 		var screenPos = {
-			x: rect.left //*- rootRect.left*/) + (rect.width / 2),
-			y: rect.top //*- rootRect.top*/) + (rect.height / 2)
+			x: rect.left /*- rootRect.left*/ + (rect.width / 2),
+			y: rect.top /*- rootRect.top*/ + (rect.height / 2)
 		};
 		var worldPos = this.editor.screenToWorld(screenPos);
 
-		return {
+		return worldPos;
+		/*return {
 			x: worldPos.x + (rect.width / 2),
 			y: worldPos.y + (rect.height / 2)
-		};
+		};*/
 	},
 
 	beginConnDrag(e) {
@@ -297,8 +300,8 @@ Ned.Connector = {
 			e.stopPropagation();
 			e.preventDefault();
 			var mouseOffset = 3; // this offset is so the path isn't under the mouse when we release it. Else it isn't possible to get the underlying connector
-			var rootRect = this.editor.svg.getBoundingClientRect();
-			var pos = {	x: (e.pageX - rootRect.left), y: (e.pageY - rootRect.top + mouseOffset) };
+			var screenPos = this.editor.screenToWorld({ x: e.pageX, y: e.pageY });
+			var pos = {	x: screenPos.x, y: screenPos.y + mouseOffset };
 			path.updateWithPos(pos);
 		}
 		
