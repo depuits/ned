@@ -295,6 +295,11 @@ Ned.Connector = {
 	},
 
 	beginConnDrag(e) {
+		// we can only drag when the left mouse button is pressed
+		if (e.button != 0) {
+			return;
+		}
+
 		e.stopPropagation();
 		e.preventDefault();
 
@@ -385,6 +390,11 @@ Ned.Path = {
 	},
 
 	onClicked(e) {
+		// we can only drag when the left mouse button is pressed
+		if (e.button != 0) {
+			return;
+		}
+		
 		this.destroy();
 	},
 
