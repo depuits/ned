@@ -8,6 +8,8 @@ var Ned = {
 		this.svg = null;
 		this.view = null;
 
+		this.snapping = 0;
+
 		this.singleInputs = false;
 		this.singleOutputs = false;
 
@@ -140,6 +142,12 @@ Ned.Node = {
 		};
 	},
 	set position(pos) {
+		if (this.editor.snapping) {
+			var snp = this.editor.snapping;
+			pos.x = Math.round(pos.x / snp) * snp;
+			pos.y = Math.round(pos.y / snp) * snp;
+		}
+
 		this.eRoot.setAttribute("x", pos.x);
 		this.eRoot.setAttribute("y", pos.y);
 		this.updatePaths();
