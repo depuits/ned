@@ -77,7 +77,7 @@ n1o1.connectTo(n2i1);
 
 Depending on the editor settings for `singleInputs` and `singleOutputs` the number of possible connections is limited.
 
-### Customization
+## Customization
 Most of the visual customization can be done inside the [css](./ned.css). Other node customization like adding objects and changing size is work in progress.
 
 ## SVG structure
