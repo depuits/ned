@@ -20,10 +20,9 @@
 	</svg>
 
 	<script>
-		var grid = document.getElementById("grid");
+		var grid = document.querySelector("#grid");
 
-		var editor = Object.create(Ned);
-		editor.init("svg");
+		var editor = Ned.create("#svg");
 		editor.snapping = 10;
 		//editor.singleInputs = true;
 		editor.singleOutputs = true;
@@ -67,8 +66,7 @@
 		}, true);
 
 		// after setup create nodes		
-		var n1 = Object.create(Ned.Node);
-		n1.init (editor, "Test node");
+		var n1 = editor.createNode("Test node");
 		n1.position = { x: 100, y: 180};
 
 		var n1i1 = n1.addInput("");
@@ -77,14 +75,12 @@
 		var n1o1 = n1.addOutput("Output A");
 		var n1o2 = n1.addOutput("Output B");
 
-		var n2 = Object.create(Ned.Node);
-		n2.init (editor, "Start");
+		var n2 = editor.createNode("Start");
 		var n2o1 = n2.addOutput("Output");
 
 		n2o1.connectTo(n1i2);
 
-		var n3 = Object.create(Ned.Node);
-		n3.init (editor, "Other test");
+		var n3 = editor.createNode("Other test");
 		var n3i1 = n3.addInput("Input B");
 		var n3o1 = n3.addOutput("Output");
 	</script>

@@ -4,17 +4,23 @@
  * Main object
  **************************/
 var Ned = {
+	create(svg) {
+		var editor = Object.create(Ned);
+		editor.init(svg);
+
+		return editor;
+	},
+
 	init(svg) {
 		this.svg = null;
-		this.view = null;
-
+		
 		this.snapping = 0;
 
 		this.singleInputs = false;
 		this.singleOutputs = false;
 
 		if (!(svg instanceof SVGElement)) {
-			svg = document.getElementById(svg);
+			svg = document.querySelector(svg);
 		}
 		this.svg = svg;
 		this.svg.ns = this.svg.namespaceURI;
@@ -28,6 +34,13 @@ var Ned = {
 		this.pathGroup = document.createElementNS(this.svg.ns, "g");
 		this.pathGroup.setAttribute("class", "PathGroup");
 		this.svg.appendChild(this.pathGroup);
+	},
+
+	createNode(title) {
+		var n = Object.create(Ned.Node);
+		n.init (this, title);
+
+		return n;
 	},
 
 	screenToWorld(pos) {
