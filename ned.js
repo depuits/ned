@@ -19,6 +19,8 @@ var Ned = {
 		this.singleInputs = false;
 		this.singleOutputs = false;
 
+		this.dragConn = null;
+
 		if (!(svg instanceof SVGElement)) {
 			svg = document.querySelector(svg);
 		}
@@ -240,11 +242,23 @@ Ned.Connector = {
 		this.eDot = document.createElementNS(this.editor.svg.ns, "circle");
 		this.eDot.ref = this; // we set the refference on the object we want to be able to connect to
 		this.eDot.addEventListener("mousedown", (e) => { this.beginConnDrag(e); });
-		this.eDot.addEventListener("mouseenter", (e) => { this.eDot.setAttribute("class", "ConnHover"); }); // TODO more addvanced class addition (check wheiter the nodes can connect before adding the class)
-		this.eDot.addEventListener("mouseleave", (e) => { this.eDot.removeAttribute("class"); });
+		this.eDot.addEventListener("mouseenter", (e) => { this.addHoverClass(); });
+		this.eDot.addEventListener("mouseleave", (e) => { this.removeHoverClass(); });
 		this.eRoot.appendChild(this.eDot);
 
 		this.updatePosition();
+	},
+
+	addHoverClass() {
+		var conn = this.editor.dragConn;
+		if (!conn || (this.isInput === conn.isInput)) return;
+
+		// we only add the class if we are dragging and the dragging connector isn't the same type of this connector
+		this.eDot.setAttribute("class", "ConnHover"); 
+	},
+	removeHoverClass() {
+		// on mouse leave we'll always remove the class
+		this.eDot.removeAttribute("class");
 	},
 
 	updatePosition() {
@@ -336,6 +350,7 @@ Ned.Connector = {
 		e.stopPropagation();
 		e.preventDefault();
 
+		this.editor.dragConn = this;
 		var path = Object.create(Ned.Path);
 		path.init(this);
 
@@ -352,9 +367,11 @@ Ned.Connector = {
 			e.stopPropagation();
 			e.preventDefault();
 
+			this.editor.dragConn = null;
 			var conn = e.target.ref; // get the saved refence to connect
 			if (Ned.Connector.isPrototypeOf(conn)) {
 				this.connectTo(conn, path);
+				conn.removeHoverClass(); // we've stopped dragging so we'll make sure the hover class is removed
 			} else {
 				path.destroy();
 			}

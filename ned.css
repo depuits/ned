@@ -58,11 +58,15 @@
  * while connhover is for when you can make a connection to an other node
  */
 .Nodegroup > .NodeContainer > .Inputs > .Input > circle:hover,
-.Nodegroup > .NodeContainer > .Inputs > .Input > .ConnHover,
-.Nodegroup > .NodeContainer > .Outputs > .Output > circle:hover,
-.Nodegroup > .NodeContainer > .Outputs > .Output > .ConnHover {
+.Nodegroup > .NodeContainer > .Outputs > .Output > circle:hover {
 	stroke: #B7C3F3;
 	stroke-width: 4px;
+}
+
+.Nodegroup > .NodeContainer > .Inputs > .Input > .ConnHover,
+.Nodegroup > .NodeContainer > .Outputs > .Output > .ConnHover {
+	stroke: #22FF22;
+	stroke-width: 2px;
 }
 
 .Nodegroup > .NodeContainer > .Inputs {
