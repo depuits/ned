@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="ned.css">
 </head>
 <body>
-	<svg id="svg">
+	<svg id="svg" oncontextmenu="return false;">
 		<defs>
 			<pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
 				<path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
@@ -27,25 +27,6 @@
 		editor.snapping = 10;
 		//editor.singleInputs = true;
 		editor.singleOutputs = true;
-
-		var n1 = Object.create(Ned.Node);
-		n1.init (editor, "Test node");
-		n1.position = { x: 100, y: 180};
-
-		var n1i1 = n1.addInput("");
-		var n1i2 = n1.addInput("Input B");
-
-		var n1o1 = n1.addOutput("Output A");
-		var n1o2 = n1.addOutput("Output B");
-
-		var n2 = Object.create(Ned.Node);
-		n2.init (editor, "Start");
-		var n2o1 = n2.addOutput("Output")
-
-		var n3 = Object.create(Ned.Node);
-		n3.init (editor, "Other test");
-		var n3i1 = n3.addInput("Input B");
-		var n3o1 = n3.addOutput("Output");
 
 		var panZoom = svgPanZoom(editor.svg, {
 			viewportSelector: ".svg-pan-zoom_viewport", 
@@ -86,11 +67,31 @@
 			}
 		};
 
-		//handle grid tilling
-
 		window.addEventListener("resize", (e) => {
 			panZoom.resize();
 		}, true);
+
+		// after setup create nodes		
+		var n1 = Object.create(Ned.Node);
+		n1.init (editor, "Test node");
+		n1.position = { x: 100, y: 180};
+
+		var n1i1 = n1.addInput("");
+		var n1i2 = n1.addInput("Input B");
+
+		var n1o1 = n1.addOutput("Output A");
+		var n1o2 = n1.addOutput("Output B");
+
+		var n2 = Object.create(Ned.Node);
+		n2.init (editor, "Start");
+		var n2o1 = n2.addOutput("Output");
+
+		n2o1.connectTo(n1i2);
+
+		var n3 = Object.create(Ned.Node);
+		n3.init (editor, "Other test");
+		var n3i1 = n3.addInput("Input B");
+		var n3o1 = n3.addOutput("Output");
 	</script>
 </body>
 </html>

@@ -226,8 +226,6 @@ Ned.Connector = {
 		// ****************** text ******************
 		this.eText = document.createElementNS(this.editor.svg.ns,"text");
 		this.eText.appendChild(document.createTextNode(name));
-		//this.eText.setAttribute("x", "50%");
-		//this.eText.setAttribute("y", headerSize - 4); // padding to the bottom text
 		this.eRoot.appendChild(this.eText);
 
 		// ****************** dot ******************
@@ -253,7 +251,6 @@ Ned.Connector = {
 		for(let p of this.paths) p.update();
 	},
 	addPath(path) {
-		// TODO add single input/output logic here
 		if (this.hasSinglePath) {
 			// destroy all current paths
 			for(let p of this.paths) p.destroy();
@@ -294,6 +291,33 @@ Ned.Connector = {
 		return this.editor.screenToWorld(screenPos);
 	},
 
+	// path parameter is optional and a path is created if none is supplied
+	connectTo(conn, path) {
+		if (this.isInput === conn.isInput) {
+			//can't connect 2 inputs or 2 outputs
+			if (path) {
+				path.destroy();
+			}
+		}
+		else {
+			if (!path) {
+				var path = Object.create(Ned.Path);
+				path.init(this);
+			}
+			path.setFinalConn(conn);
+			// check if we don't already have a path like this
+			if (this.paths.find((p) => path.equals(p))) {
+				// this path already exists so delete it
+				path.destroy();
+			} else {
+				// remember the new path
+				//add path to conn paths list to update it
+				this.addPath(path);
+				conn.addPath(path);
+			}
+		}
+	},
+
 	beginConnDrag(e) {
 		// we can only drag when the left mouse button is pressed
 		if (e.button != 0) {
@@ -321,25 +345,9 @@ Ned.Connector = {
 
 			var conn = e.target.ref; // get the saved refence to connect
 			if (Ned.Connector.isPrototypeOf(conn)) {
-				if (this.isInput === conn.isInput) {
-					//can't connect 2 inputs or 2 outputs
-					path.destroy ();
-				}
-				else {
-					path.setFinalConn(conn);
-					// check if we don't already have a path like this
-					if (this.paths.find((p) => path.equals(p))) {
-						// this path already exists so delete it
-						path.destroy ();
-					} else {
-						// remember the new path
-						//add path to conn paths list to update it
-						this.addPath(path);
-						conn.addPath(path);
-					}
-				}
+				this.connectTo(conn, path);
 			} else {
-				path.destroy ();
+				path.destroy();
 			}
 
 			window.removeEventListener("mousemove", onConnDragMouseMove);
