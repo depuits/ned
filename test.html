@@ -10,16 +10,18 @@
 			<pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
 				<path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
 			</pattern>
-			<pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+			<pattern id="bigGrid" width="100" height="100" patternUnits="userSpaceOnUse">
 				<rect width="100" height="100" fill="url(#smallGrid)"/>
 				<path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
 			</pattern>
 		</defs>
 
-		<rect width="200%" height="200%" fill="url(#grid)" />
+		<rect id="grid" width="200%" height="200%" fill="url(#bigGrid)" />
 	</svg>
 
 	<script>
+		var grid = document.getElementById("grid");
+
 		var editor = Object.create(Ned);
 		editor.init("svg");
 		editor.snapping = 10;
@@ -59,7 +61,12 @@
 			fit: false, 
 			contain: false, 
 			center: false, 
-			refreshRate: "auto"
+			refreshRate: "auto",
+			onPan: function(newPan) {
+				var zoom = panZoom.getZoom();
+				grid.setAttribute("x", -newPan.x / zoom);
+				grid.setAttribute("y", -newPan.y / zoom);
+			}
 		});
 
 		editor.view = {
