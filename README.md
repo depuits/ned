@@ -1,10 +1,10 @@
 # Ned (WIP)
-Simple javascript node editor using svg graphics. Currently working and tested in Chrome. A working example can be found [here](https://gnaq.zapto.org/ned).
+Simple javascript node editor using svg graphics. Currently working and tested in Chrome. A working example can be found [here](https://depuits.github.io/ned).
 
 The panning and zooming in the example uses [ariutta svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom) but any pan and/or zoom could be used.
 
 ## How To Use
-For a complete look on how everything works you can take a look at the [test.html](./test.html).
+For a complete look on how everything works you can take a look at the [index.html](./index.html).
 
 ### Editor
 Create and init an editor using `Ned.Create(arg)`. The argument to function should be a CSS selector or a DOM Element.
