@@ -5,11 +5,11 @@ The panning and zooming in the example uses [ariutta svg-pan-zoom](https://githu
 
 ## How To Use
 
-For a complete look on how everything works you can take a look at the [test.html](./blob/master/test.html).
+For a complete look on how everything works you can take a look at the [test.html](./test.html).
 
 ### Editor
 
-Create and init an editor using
+Create and init an editor using `Nde.Create(arg)`. The argument to function should be a CSS selector or a DOM Element.
 ```javascript
 var editor = Ned.create("#svg");
 // or
@@ -17,7 +17,7 @@ var svgElement = document.querySelector("#svg");
 var editor = Ned.create(svgElement);
 ```
 
-After initializing the editor you can setup the option and create nodes.
+After creating an editor you can setup the options and create nodes.
 
 #### Options
 
@@ -26,6 +26,38 @@ After initializing the editor you can setup the option and create nodes.
 + `singleOutputs`: when `true` output connectors only allow a single connection. Default is `false`.
 + `screenToWorld`: function to translate screen coördinates to world coördinates. This is used to corectly position nodes and paths when you enable a pan and/or zoom on the svg. Default is `(pos) => { return pos; }`.
 
+The `screenToWorld` function should be correctly set before any connections are made. Any paths added before this will be drawn incorrectly.
+
+ScreenToWorld example with svg position offset.
+```javascript
+editor.screenToWorld = function(pos) {
+	var rect = editor.svg.getBoundingClientRect();
+
+	return { 
+		x: (pos.x - rect.left), 
+		y: (pos.y - rect.top)
+	};
+};
+```
+
+ScreenToWorld example with svg position offset and pan and zoom using [ariutta svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom).
+```javascript
+var panZoom = svgPanZoom(editor.svg);
+
+editor.screenToWorld = function(pos) {
+	var rect = editor.svg.getBoundingClientRect();
+	var pan = panZoom.getPan();
+	var zoom = panZoom.getZoom();
+
+	return { 
+		x: (((pos.x - rect.left) - pan.x) / zoom), 
+		y: (((pos.y - rect.top) - pan.y) / zoom)
+	};
+};
+```
+
 ### Nodes
+
+Nodes
 
 ### Conectors
