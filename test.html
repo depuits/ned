@@ -50,21 +50,16 @@
 			}
 		});
 
-		editor.view = {
-			screenToWorld(pos) {
-				var rect = editor.svg.getBoundingClientRect();
-				var pan = panZoom.getPan();
-				var zoom = panZoom.getZoom();
-				var offset = { x: pan.x + rect.left, y: pan.y + rect.top, };
+		editor.screenToWorld = function(pos) {
+			var rect = editor.svg.getBoundingClientRect();
+			var pan = panZoom.getPan();
+			var zoom = panZoom.getZoom();
+			var offset = { x: pan.x + rect.left, y: pan.y + rect.top, };
 
-				return { 
-					x: (((pos.x - rect.left) - pan.x) / zoom), 
-					y: (((pos.y - rect.top) - pan.y) / zoom)
-				};
-			},
-			worldToScreen(pos) {
-				return pos;
-			}
+			return { 
+				x: (((pos.x - rect.left) - pan.x) / zoom), 
+				y: (((pos.y - rect.top) - pan.y) / zoom)
+			};
 		};
 
 		window.addEventListener("resize", (e) => {

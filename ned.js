@@ -20,23 +20,18 @@ var Ned = {
 		this.svg.ns = this.svg.namespaceURI;
 
 		// group for all node elements
-		this.nodegroup = document.createElementNS(this.svg.ns,"g");
+		this.nodegroup = document.createElementNS(this.svg.ns, "g");
 		this.nodegroup.setAttribute("class", "Nodegroup");
 		this.svg.appendChild(this.nodegroup);
 
 		// group to draw the paths above the nodes
-		this.pathGroup = document.createElementNS(this.svg.ns,"g");
+		this.pathGroup = document.createElementNS(this.svg.ns, "g");
 		this.pathGroup.setAttribute("class", "PathGroup");
 		this.svg.appendChild(this.pathGroup);
 	},
 
 	screenToWorld(pos) {
-		if (!this.view) return pos;
-		return this.view.screenToWorld(pos);
-	},
-	worldToScreen(pos) {
-		if (!this.view) return pos;
-		return this.view.worldToScreen(pos);
+		return pos;
 	}
 };
 
@@ -50,7 +45,7 @@ Ned.Node = {
 		this.outputs = [];
 
 		// ****************** root ******************
-		this.eRoot = document.createElementNS(ned.svg.ns,"svg");
+		this.eRoot = document.createElementNS(ned.svg.ns, "svg");
 		this.eRoot.setAttribute("class", "NodeContainer");
 		this.eRoot.setAttribute("overflow", "visible");
 		ned.nodegroup.appendChild(this.eRoot);
@@ -60,44 +55,44 @@ Ned.Node = {
 		var headerSize = 24;
 
 		// ****************** background ******************
-		this.eBack = document.createElementNS(ned.svg.ns,"rect");
+		this.eBack = document.createElementNS(ned.svg.ns, "rect");
 		this.eBack.setAttribute("class", "Background");
 		this.eBack.setAttribute("width", "100%");
 		this.eBack.setAttribute("height", "100%");
 		this.eRoot.appendChild(this.eBack);
 
 		// ****************** header ******************
-		this.eHeader = document.createElementNS(ned.svg.ns,"g");
+		this.eHeader = document.createElementNS(ned.svg.ns, "g");
 		this.eHeader.setAttribute("class", "Header");
 		this.eRoot.appendChild(this.eHeader);
 		this.eHeader.addEventListener("mousedown", (e) => {	this.beginNodeDrag (e);	});
 
-		this.eHeaderBack = document.createElementNS(ned.svg.ns,"rect");
+		this.eHeaderBack = document.createElementNS(ned.svg.ns, "rect");
 		this.eHeaderBack.setAttribute("width", "100%");
 		this.eHeaderBack.setAttribute("height", headerSize);
 		this.eHeader.appendChild(this.eHeaderBack);
 		
-		this.eHeaderText = document.createElementNS(ned.svg.ns,"text");
+		this.eHeaderText = document.createElementNS(ned.svg.ns, "text");
 		this.eHeaderText.appendChild(document.createTextNode(sTitle));
 		this.eHeaderText.setAttribute("x", "50%");
 		this.eHeaderText.setAttribute("y", headerSize - 4); // padding to the bottom text
 		this.eHeader.appendChild(this.eHeaderText);
 
 		// ****************** foreign objects ******************
-		this.eForeign = document.createElementNS(ned.svg.ns,"foreignObject");
+		this.eForeign = document.createElementNS(ned.svg.ns, "foreignObject");
 		this.eForeign.setAttribute("x", "16");
 		this.eForeign.setAttribute("y", headerSize);
 		this.eRoot.appendChild(this.eForeign);
 
 		// ****************** inputs and outputs ******************
-		this.eInputs = document.createElementNS(ned.svg.ns,"svg");
+		this.eInputs = document.createElementNS(ned.svg.ns, "svg");
 		this.eInputs.setAttribute("class", "Inputs");
 		this.eInputs.setAttribute("overflow", "visible");
 		this.eInputs.setAttribute("x", "0%");
 		this.eInputs.setAttribute("y", headerSize);
 		this.eRoot.appendChild(this.eInputs);
 
-		this.eOutputs = document.createElementNS(ned.svg.ns,"svg");
+		this.eOutputs = document.createElementNS(ned.svg.ns, "svg");
 		this.eOutputs.setAttribute("class", "Outputs");
 		this.eOutputs.setAttribute("overflow", "visible");
 		this.eOutputs.setAttribute("x", "100%");
@@ -197,8 +192,8 @@ Ned.Node = {
 			e.stopPropagation(); 
 			e.preventDefault();
 
-			window.removeEventListener("mousemove",onNodeDragMouseMove);
-			window.removeEventListener("mouseup", onNodeDragMouseUp);
+			window.removeEventListener("mousemove", onNodeDragMouseMove);
+			window.removeEventListener("mouseup",  onNodeDragMouseUp);
 		};
 
 		window.addEventListener("mousemove", onNodeDragMouseMove);
@@ -218,18 +213,18 @@ Ned.Connector = {
 		var neRoot = isInput ? node.eInputs : node.eOutputs;
 
 		// ****************** root ******************
-		this.eRoot = document.createElementNS(this.editor.svg.ns,"svg");
+		this.eRoot = document.createElementNS(this.editor.svg.ns, "svg");
 		this.eRoot.setAttribute("class", isInput ? "Input" : "Output");
 		this.eRoot.setAttribute("overflow", "visible");
 		neRoot.appendChild(this.eRoot);
 
 		// ****************** text ******************
-		this.eText = document.createElementNS(this.editor.svg.ns,"text");
+		this.eText = document.createElementNS(this.editor.svg.ns, "text");
 		this.eText.appendChild(document.createTextNode(name));
 		this.eRoot.appendChild(this.eText);
 
 		// ****************** dot ******************
-		this.eDot = document.createElementNS(this.editor.svg.ns,"circle");
+		this.eDot = document.createElementNS(this.editor.svg.ns, "circle");
 		this.eDot.ref = this; // we set the refference on the object we want to be able to connect to
 		this.eDot.addEventListener("mousedown", (e) => { this.beginConnDrag(e); });
 		this.eDot.addEventListener("mouseenter", (e) => { this.eDot.setAttribute("class", "ConnHover"); }); // TODO more addvanced class addition (check wheiter the nodes can connect before adding the class)
