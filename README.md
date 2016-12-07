@@ -83,6 +83,7 @@ Most of the visual customization can be done inside the [css](./ned.css). Other 
 ## SVG structure
 This is the default svg structure without any other libraries or other things in the svg. Except for the first ROOT svg element the structure is "`DOM object` ClassName".
 
+```
 `svg` ROOT  
   │  
   ├─ `g` Nodegroup  
@@ -106,3 +107,4 @@ This is the default svg structure without any other libraries or other things in
   └─ `g` PathGroup  
       ├─ `path` Path  
       └─ ...  
+```
