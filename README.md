@@ -1,15 +1,13 @@
 # Ned (WIP)
-Simple javascript node editor using svg graphics. Currently working and tested in Chrome.
+Simple javascript node editor using svg graphics. Currently working and tested in Chrome. A working example can be found [here](https://gnaq.zapto.org/ned).
 
 The panning and zooming in the example uses [ariutta svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom) but any pan and/or zoom could be used.
 
 ## How To Use
-
 For a complete look on how everything works you can take a look at the [test.html](./test.html).
 
 ### Editor
-
-Create and init an editor using `Nde.Create(arg)`. The argument to function should be a CSS selector or a DOM Element.
+Create and init an editor using `Ned.Create(arg)`. The argument to function should be a CSS selector or a DOM Element.
 ```javascript
 var editor = Ned.create("#svg");
 // or
@@ -20,7 +18,6 @@ var editor = Ned.create(svgElement);
 After creating an editor you can setup the options and create nodes.
 
 #### Options
-
 + `snapping`: value to snap nodes to (`0` or `false` is disabled). Default is `0`.
 + `singleInputs`: when `true` input connectors only allow a single connection. Default is `false`.
 + `singleOutputs`: when `true` output connectors only allow a single connection. Default is `false`.
@@ -57,7 +54,28 @@ editor.screenToWorld = function(pos) {
 ```
 
 ### Nodes
+Nodes can simple be created by calling 
+```javascript
+// create a new node
+var n1 = editor.createNode("Node title");
 
-Nodes
+// position the node
+n1.position = { x: 100, y: 180};
+```
 
-### Conectors
+#### Connectors
+Connectors are the link points of the nodes. Any node can have as many or little connectors as needed. Connectors are split in two groups: input and output. To add connectors you call
+```javascript
+var n1i1 = n1.addInput("Input name");
+var n1o1 = n1.addOutput("Output name");
+```
+
+Connections can be made by simply calling the `connectTo` function on a connector and passing in the target connector. If a connection can not be made the function will return `false`.
+```javascript
+n1o1.connectTo(n2i1);
+```
+
+Depending on the editor settings for `singleInputs` and `singleOutputs` the number of possible connections is limited.
+
+### Customization
+Most of the visual customization can be done inside the [css](./ned.css). Other node customization like adding objects and changing size is work in progress.

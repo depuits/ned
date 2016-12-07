@@ -13,7 +13,7 @@ var Ned = {
 
 	init(svg) {
 		this.svg = null;
-		
+
 		this.snapping = 0;
 
 		this.singleInputs = false;
@@ -303,27 +303,28 @@ Ned.Connector = {
 	connectTo(conn, path) {
 		if (this.isInput === conn.isInput) {
 			//can't connect 2 inputs or 2 outputs
-			if (path) {
-				path.destroy();
-			}
+			if (path) path.destroy();
+			return false;
 		}
-		else {
-			if (!path) {
-				var path = Object.create(Ned.Path);
-				path.init(this);
-			}
-			path.setFinalConn(conn);
-			// check if we don't already have a path like this
-			if (this.paths.find((p) => path.equals(p))) {
-				// this path already exists so delete it
-				path.destroy();
-			} else {
-				// remember the new path
-				//add path to conn paths list to update it
-				this.addPath(path);
-				conn.addPath(path);
-			}
+
+		if (!path) {
+			var path = Object.create(Ned.Path);
+			path.init(this);
 		}
+		path.setFinalConn(conn);
+
+		// check if we don't already have a path like this
+		if (this.paths.find((p) => path.equals(p))) {
+			// this path already exists so delete it
+			path.destroy();
+			return false;
+		} 
+
+		// remember the new path
+		//add path to conn paths list to update it
+		this.addPath(path);
+		conn.addPath(path);
+		return true;
 	},
 
 	beginConnDrag(e) {
