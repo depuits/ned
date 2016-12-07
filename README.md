@@ -79,3 +79,29 @@ Depending on the editor settings for `singleInputs` and `singleOutputs` the numb
 
 ### Customization
 Most of the visual customization can be done inside the [css](./ned.css). Other node customization like adding objects and changing size is work in progress.
+
+## SVG structure
+This is the default svg structure without any other libraries or other things in the svg. Except for the first ROOT svg element the structure is "`DOM object` ClassName".
+
+* `svg` ROOT
+  * `g` Nodegroup
+    * `svg` NodeContainer
+      * `rect` Background
+      * `g` Header
+        * `rect`
+        * `text`
+      * `foreignObject`
+      * `svg` Inputs
+        * `svg` Input
+          * `text`
+          * `circle`
+        * ...
+      * `svg` Outputs
+        * `svg` Output
+          * `text`
+          * `circle`
+        * ...
+    * ...
+  * `g` PathGroup
+    * `path` Path
+    * ...
