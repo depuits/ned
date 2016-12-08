@@ -29,7 +29,7 @@ After creating an editor you can setup the options and create nodes.
 + `singleOutputs`: when `true` output connectors only allow a single connection. Default is `false`.
 + `screenToWorld`: function to translate screen coördinates to world coördinates. This is used to corectly position nodes and paths when you enable a pan and/or zoom on the svg. Default is `(pos) => { return pos; }`.
 
-The `screenToWorld` function should be correctly set before any connections are made. Any paths added before this will be drawn incorrectly.
+The `screenToWorld` function should be correctly set before any connections are made. Any paths added before this will be drawn incorrectly. In this method the `this` object links to the editor trying to translate the position.
 
 ScreenToWorld example with svg position offset.
 ```javascript
@@ -49,8 +49,8 @@ var panZoom = svgPanZoom(editor.svg);
 
 editor.screenToWorld = function(pos) {
 	var rect = this.svg.getBoundingClientRect();
-	var pan = panZoom.getPan();
-	var zoom = panZoom.getZoom();
+	var pan = this.panZoom.getPan();
+	var zoom = this.panZoom.getZoom();
 
 	return { 
 		x: (((pos.x - rect.left) - pan.x) / zoom), 
