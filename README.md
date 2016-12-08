@@ -1,4 +1,4 @@
-# Ned (WIP)
+# Ned
 Simple javascript node editor using svg graphics. A working example can be found [here](https://depuits.github.io/ned).
 
  Some **SVG2** features are required. Currently working and tested in **Chrome**. 
