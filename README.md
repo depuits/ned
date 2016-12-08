@@ -5,6 +5,10 @@ Simple javascript node editor using svg graphics. A working example can be found
 
 The panning and zooming in the example uses [ariutta svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom) but any pan and/or zoom could be used.
 
+## Examples
+* [Pan and zoom](https://depuits.github.io/ned/index.html)
+* [Dual pannels](https://depuits.github.io/ned/dual.html)
+
 ## How To Use
 For a complete look on how everything works you can take a look at the [index.html](./index.html).
 
