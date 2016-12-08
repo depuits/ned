@@ -17,10 +17,10 @@
 </head>
 <body>
 	<svg id="svg1" oncontextmenu="return false;">
-		<text x="15" y="15" font-family="Verdana" font-size="35">Single inputs</text>
+		<text x="15" y="35" font-family="Verdana" font-size="35">Single inputs</text>
 	</svg>
 	<svg id="svg2" oncontextmenu="return false;">
-		<text x="15" y="15" font-family="Verdana" font-size="35">Single outputs</text>		
+		<text x="15" y="35" font-family="Verdana" font-size="35">Single outputs</text>		
 	</svg>
 
 	<script>
@@ -51,7 +51,7 @@
 			n2o1.connectTo(n1i2);
 
 			var n3 = editor.createNode("Other test");
-			n3.position = { x: 100, y: 10};
+			n3.position = { x: 350, y: 100};
 			var n3i1 = n3.addInput("Input B");
 			var n3o1 = n3.addOutput("Output");
 
