@@ -5,6 +5,13 @@
 	<link rel="stylesheet" type="text/css" href="ned.css">
 </head>
 <body>
+	<div id="info">
+		<p><input id="snapInput" type="number" min="0" value="10"/> Snap distance (0 = disabled)</p>
+		<p>Drag left, middle or right mouse button to pan and scroll to zoom.</p>
+		<p>Drag left mouse button to move nodes.</p>
+		<p>Drag left mouse button to link nodes.</p>
+		<p>Press left mouse button on a path to unlink nodes.</p>
+	</div>
 	<svg id="svg" oncontextmenu="return false;">
 		<defs>
 			<pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -25,7 +32,7 @@
 		var editor = Ned.create("#svg");
 		editor.snapping = 10;
 		//editor.singleInputs = true;
-		editor.singleOutputs = true;
+		//editor.singleOutputs = true;
 
 		var panZoom = svgPanZoom(editor.svg, {
 			viewportSelector: ".svg-pan-zoom_viewport", 
@@ -64,9 +71,15 @@
 			panZoom.resize();
 		}, true);
 
+		var snapInput = document.querySelector("#snapInput");
+		snapInput.addEventListener("input", (e) => {
+			console.log(e);
+			editor.snapping = +e.target.value;
+		}, true);
+
 		// after setup create nodes		
 		var n1 = editor.createNode("Test node");
-		n1.position = { x: 100, y: 180};
+		n1.position = { x: 400, y: 280};
 
 		var n1i1 = n1.addInput("");
 		var n1i2 = n1.addInput("Input B");
@@ -75,11 +88,13 @@
 		var n1o2 = n1.addOutput("Output B");
 
 		var n2 = editor.createNode("Start");
+		n2.position = { x: 100, y: 150};
 		var n2o1 = n2.addOutput("Output");
 
 		n2o1.connectTo(n1i2);
 
 		var n3 = editor.createNode("Other test");
+		n3.position = { x: 200, y: 10};
 		var n3i1 = n3.addInput("Input B");
 		var n3o1 = n3.addOutput("Output");
 	</script>

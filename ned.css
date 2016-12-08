@@ -6,13 +6,24 @@
  * #DD7596
  * #CF1259
  */
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#info p {
+	margin: 4;
+}
 
 #svg {
-	position: absolute;
+	/*position: absolute;
 	top: 50px;
-	left: 10px;
-	width: calc(100% - 22px);
-	height: calc(100% - 52px);
+	left: 10px;*/
+	width: calc(100% - 2);
+	height: 100%;
 	border: 1px solid #000;
 }
 
