@@ -1,5 +1,7 @@
 # Ned (WIP)
-Simple javascript node editor using svg graphics. Currently working and tested in Chrome. A working example can be found [here](https://depuits.github.io/ned).
+Simple javascript node editor using svg graphics. A working example can be found [here](https://depuits.github.io/ned).
+
+ Some **SVG2** features are required. Currently working and tested in **Chrome**. 
 
 The panning and zooming in the example uses [ariutta svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom) but any pan and/or zoom could be used.
 
@@ -28,7 +30,7 @@ The `screenToWorld` function should be correctly set before any connections are 
 ScreenToWorld example with svg position offset.
 ```javascript
 editor.screenToWorld = function(pos) {
-	var rect = editor.svg.getBoundingClientRect();
+	var rect = this.svg.getBoundingClientRect();
 
 	return { 
 		x: (pos.x - rect.left), 
@@ -42,7 +44,7 @@ ScreenToWorld example with svg position offset and pan and zoom using [ariutta s
 var panZoom = svgPanZoom(editor.svg);
 
 editor.screenToWorld = function(pos) {
-	var rect = editor.svg.getBoundingClientRect();
+	var rect = this.svg.getBoundingClientRect();
 	var pan = panZoom.getPan();
 	var zoom = panZoom.getZoom();
 

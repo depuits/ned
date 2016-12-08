@@ -3,6 +3,25 @@
 	<script src="ned.js"></script>
 	<script src="https://ariutta.github.io/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="ned.css">
+	<style type="text/css">	
+		body {
+		  height: 100%;
+		  width: 100%;
+		  margin: 0;
+		  display: flex;
+		  flex-direction: column;
+		}
+
+		#info p {
+			margin: 4;
+		}
+
+		#svg {
+			width: calc(100% - 2px);
+			height: 100%;
+			border: 1px solid #000;
+		}
+	</style>
 </head>
 <body>
 	<div id="info">
@@ -34,7 +53,7 @@
 		//editor.singleInputs = true;
 		//editor.singleOutputs = true;
 
-		var panZoom = svgPanZoom(editor.svg, {
+		editor.panZoom = svgPanZoom(editor.svg, {
 			viewportSelector: ".svg-pan-zoom_viewport", 
 			panEnabled: true, 
 			controlIconsEnabled: true, 
@@ -50,16 +69,16 @@
 			center: false, 
 			refreshRate: "auto",
 			onPan: function(newPan) {
-				var zoom = panZoom.getZoom();
+				var zoom = editor.panZoom.getZoom();
 				grid.setAttribute("x", -newPan.x / zoom);
 				grid.setAttribute("y", -newPan.y / zoom);
 			}
 		});
 
 		editor.screenToWorld = function(pos) {
-			var rect = editor.svg.getBoundingClientRect();
-			var pan = panZoom.getPan();
-			var zoom = panZoom.getZoom();
+			var rect = this.svg.getBoundingClientRect();
+			var pan = this.panZoom.getPan();
+			var zoom = this.panZoom.getZoom();
 
 			return { 
 				x: (((pos.x - rect.left) - pan.x) / zoom), 
@@ -68,12 +87,11 @@
 		};
 
 		window.addEventListener("resize", (e) => {
-			panZoom.resize();
+			editor.panZoom.resize();
 		}, true);
 
 		var snapInput = document.querySelector("#snapInput");
 		snapInput.addEventListener("input", (e) => {
-			console.log(e);
 			editor.snapping = +e.target.value;
 		}, true);
 
