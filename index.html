@@ -27,7 +27,7 @@
 <body>
 	<div id="info">
 		<p><input id="snapInput" type="number" min="0" value="10"/> Snap distance (0 = disabled)</p>
-		<p>Drag left, middle or right mouse button to pan and scroll to zoom.</p>
+		<p>Drag middle mouse button to pan and scroll to zoom.</p>
 		<p>Drag left mouse button to move nodes.</p>
 		<p>Drag left mouse button to link nodes.</p>
 		<p>Press left mouse button on a path to unlink nodes.</p>
@@ -53,6 +53,11 @@
 		editor.snapping = 10;
 		//editor.singleInputs = true;
 		//editor.singleOutputs = true;
+
+		// only enable middle mouse button dragging
+		editor.svg.addEventListener("mousedown", (e) => { 
+			if (e.button !== 1) e.stopImmediatePropagation(); 
+		});
 
 		editor.panZoom = svgPanZoom(editor.svg, {
 			viewportSelector: ".svg-pan-zoom_viewport", 
