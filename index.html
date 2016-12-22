@@ -75,7 +75,7 @@
 			center: false, 
 			refreshRate: "auto",
 			onPan: function(newPan) {
-				var zoom = editor.panZoom.getZoom();
+				var zoom = this.getZoom();
 				grid.setAttribute("x", -newPan.x / zoom);
 				grid.setAttribute("y", -newPan.y / zoom);
 			}
