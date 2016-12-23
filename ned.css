@@ -12,6 +12,9 @@
 	ry: 15px;
 }
 
+.Nodegroup > .NodeContainer > .Header {
+	cursor: move;
+}
 .Nodegroup > .NodeContainer > .Header > text {
 	text-anchor: middle;
 	fill: #B7C3F3;
