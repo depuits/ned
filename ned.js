@@ -93,12 +93,6 @@ Ned.Node = {
 		this.eHeaderText.setAttribute("y", headerSize - 4); // padding to the bottom text
 		this.eHeader.appendChild(this.eHeaderText);
 
-		// ****************** foreign objects ******************
-		this.eForeign = document.createElementNS(ned.svg.ns, "foreignObject");
-		this.eForeign.setAttribute("x", "16");
-		this.eForeign.setAttribute("y", headerSize);
-		this.eRoot.appendChild(this.eForeign);
-
 		// ****************** inputs and outputs ******************
 		this.eInputs = document.createElementNS(ned.svg.ns, "svg");
 		this.eInputs.setAttribute("class", "Inputs");
@@ -114,6 +108,12 @@ Ned.Node = {
 		this.eOutputs.setAttribute("y", headerSize);
 		this.eRoot.appendChild(this.eOutputs);
 
+		// ****************** foreign objects ******************
+		this.eForeign = document.createElementNS(ned.svg.ns, "foreignObject");
+		this.eForeign.setAttribute("x", "16");
+		this.eForeign.setAttribute("y", headerSize);
+		this.eRoot.appendChild(this.eForeign);
+
 		// ****************** foreign object test ******************
 		this.eSelect = document.createElement("select");
 		this.eForeign.appendChild(this.eSelect);
@@ -124,20 +124,27 @@ Ned.Node = {
 			eOption.text = "test " + i;
 			this.eSelect.appendChild(eOption);
 		}
+		this.eText = document.createElement("textarea");
+		this.eForeign.appendChild(this.eText);
 	},
 
 	addInput(name) {
-		var o = Object.create (Ned.Connector);
-		this.inputs.push(o);
-		o.init(this, name, true);
-		return o;
+		return this.addConnection (name, true);
 	},
 
 	addOutput(name) {
-		var o = Object.create (Ned.Connector);
-		this.outputs.push(o);
-		o.init(this, name, false);
-		return o;
+		return this.addConnection (name, false);
+	},
+
+	addConnection (name, isInput) {
+		var conn = Object.create (Ned.Connector);
+		if (isInput) this.inputs.push(conn);
+		else this.outputs.push(conn);
+
+		conn.init(this, name, isInput);
+		//TODO resize / position foreign object
+
+		return conn;
 	},
 
 	updatePaths() {
@@ -168,6 +175,7 @@ Ned.Node = {
 	},
 	set width(v) {
 		this.eRoot.setAttribute("width", v);
+		//TODO resize / position foreign object
 	},
 
 	get height() {
@@ -175,6 +183,7 @@ Ned.Node = {
 	},
 	set height(v) {
 		this.eRoot.setAttribute("height", v);
+		//TODO resize / position foreign object
 	},
 
 	toTop() {
