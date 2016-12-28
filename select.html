@@ -1,0 +1,86 @@
+<html>
+<head>
+	<script src="ned.js"></script>
+	<link rel="stylesheet" type="text/css" href="ned.css">
+	<style type="text/css">	
+		body {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+		}
+
+		#svg {
+			position: absolute;
+			left: 20px;
+			top: 20px;
+			width: calc(100% - 42px);
+			height: calc(100% - 42px);
+			border: 1px solid #000;
+			cursor: crosshair;
+			/* disable text selection on svg */
+			-webkit-touch-callout: none; /* iOS Safari */
+			  -webkit-user-select: none; /* Chrome/Safari/Opera */
+			   -khtml-user-select: none; /* Konqueror */
+			     -moz-user-select: none; /* Firefox */
+			      -ms-user-select: none; /* Internet Explorer/Edge */
+			          user-select: none; /* Non-prefixed version, currently
+			                                not supported by any browser */
+		}
+	</style>
+</head>
+<body>
+	<svg id="svg" oncontextmenu="return false;">
+		<defs>
+			<pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+				<path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
+			</pattern>
+			<pattern id="bigGrid" width="100" height="100" patternUnits="userSpaceOnUse">
+				<rect width="100" height="100" fill="url(#smallGrid)"/>
+				<path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
+			</pattern>
+		</defs>
+
+		<rect id="grid" width="200%" height="200%" fill="url(#bigGrid)" />
+	</svg>
+
+	<script>
+		var editor = Ned.create("#svg");
+		editor.snapping = 10;
+		//editor.singleInputs = true;
+		//editor.singleOutputs = true;
+
+		editor.screenToWorld = function(pos) {
+			var rect = this.svg.getBoundingClientRect();
+
+			return { 
+				x: (pos.x - rect.left), 
+				y: (pos.y - rect.top)
+			};
+		};
+
+		// after setup create nodes		
+		var n1 = editor.createNode("Test node");
+		n1.position = { x: 400, y: 280};
+		n1.size = { width: 180, height: 90 };
+
+		var n1i1 = n1.addInput("");
+		var n1i2 = n1.addInput("Input B");
+
+		var n1o1 = n1.addOutput("Output A");
+		var n1o2 = n1.addOutput("Output B");
+
+		var n2 = editor.createNode("Start");
+		n2.position = { x: 100, y: 150};
+		n2.size = { width: 100, height: 60 };
+		var n2o1 = n2.addOutput("Output");
+
+		n2o1.connectTo(n1i2);
+
+		var n3 = editor.createNode("Other test");
+		n3.position = { x: 200, y: 10};
+		n3.size = { width: 180, height: 60 };
+		var n3i1 = n3.addInput("Input B");
+		var n3o1 = n3.addOutput("Output");
+	</script>
+</body>
+</html>

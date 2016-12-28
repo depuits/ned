@@ -20,6 +20,7 @@ var Ned = {
 		this.singleOutputs = false;
 
 		this.dragConn = null;
+		this.selectedNodes = [];
 
 		if (!(svg instanceof SVGElement)) {
 			svg = document.querySelector(svg);
@@ -36,6 +37,15 @@ var Ned = {
 		this.pathGroup = document.createElementNS(this.svg.ns, "g");
 		this.pathGroup.setAttribute("class", "PathGroup");
 		this.svg.appendChild(this.pathGroup);
+
+		this.svg.addEventListener("click", (e) => { this.onClicked(e); });
+	},
+
+	onClicked(e) {
+		// remove all selected class
+		for (let n of this.selectedNodes) n.deselect();
+		// reset the selected nodes list
+		this.selectedNodes = [];
 	},
 
 	createNode(title) {
@@ -100,6 +110,10 @@ Ned.Node = {
 		// ****************** foreign object ******************
 		this.eForeign = document.createElementNS(ned.svg.ns, "foreignObject");
 		this.eRoot.appendChild(this.eForeign);
+
+		// selection events
+		this.eRoot.addEventListener("mouseenter", (e) => { this.addHoverClass(); });
+		this.eRoot.addEventListener("mouseleave", (e) => { this.removeHoverClass(); });
 	},
 
 	addInput(name) {
@@ -184,6 +198,29 @@ Ned.Node = {
 		this.editor.nodegroup.appendChild(this.eRoot);
 	},
 
+	addHoverClass() {
+		if (!this.editor.dragConn) {
+			this.addClass("Selectable");
+		}
+	},
+	removeHoverClass() {
+		this.removeClass("Selectable");
+	},
+
+	select() {
+		this.addClass("Selected");
+	},
+	deselect() {
+		this.removeClass("Selected");
+	},
+
+	addClass(className) {
+		this.eRoot.classList.add(className);
+	},
+	removeClass(className) {
+		this.eRoot.classList.remove(className);
+	},
+
 	beginNodeDrag(e) {
 		// we can only drag when the left mouse button is pressed
 		if (e.button != 0) {
@@ -256,11 +293,11 @@ Ned.Connector = {
 		if (!conn || (this.isInput === conn.isInput)) return;
 
 		// we only add the class if we are dragging and the dragging connector isn't the same type of this connector
-		this.eDot.setAttribute("class", "ConnHover"); 
+		this.eDot.classList.add("ConnHover"); 
 	},
 	removeHoverClass() {
 		// on mouse leave we'll always remove the class
-		this.eDot.removeAttribute("class");
+		this.eDot.classList.remove("ConnHover");
 	},
 
 	updatePosition() {

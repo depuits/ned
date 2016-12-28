@@ -6,6 +6,14 @@
  * #DD7596
  * #CF1259
  */
+.Nodegroup > .NodeContainer.Selectable > .Background {
+	stroke: #B7C3F3;
+	stroke-width: 10px;
+}
+.Nodegroup > .NodeContainer.Selected > .Background {
+	stroke: #B7C3F3;
+	stroke-width: 6px;
+}
 .Nodegroup > .NodeContainer > .Background {
 	fill: #4F6272;
 	width: 100%;
