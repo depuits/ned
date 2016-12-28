@@ -47,6 +47,7 @@
 			// after setup create nodes		
 			var n1 = editor.createNode("Test node");
 			n1.position = { x: 300, y: 280};
+			n1.size = { width: 200, height: 100 };
 
 			var n1i1 = n1.addInput("");
 			var n1i2 = n1.addInput("Input B");
@@ -56,12 +57,14 @@
 
 			var n2 = editor.createNode("Start");
 			n2.position = { x: 0, y: 150};
+			n2.size = { width: 200, height: 100 };
 			var n2o1 = n2.addOutput("Output");
 
 			n2o1.connectTo(n1i2);
 
 			var n3 = editor.createNode("Other test");
 			n3.position = { x: 350, y: 100};
+			n3.size = { width: 200, height: 100 };
 			var n3i1 = n3.addInput("Input B");
 			var n3o1 = n3.addOutput("Output");
 

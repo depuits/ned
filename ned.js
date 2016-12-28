@@ -64,16 +64,10 @@ Ned.Node = {
 		this.eRoot.setAttribute("class", "NodeContainer");
 		this.eRoot.setAttribute("overflow", "visible");
 		ned.nodegroup.appendChild(this.eRoot);
-		this.width = 200;
-		this.height = 100;
-
-		var headerSize = 24;
 
 		// ****************** background ******************
 		this.eBack = document.createElementNS(ned.svg.ns, "rect");
 		this.eBack.setAttribute("class", "Background");
-		this.eBack.setAttribute("width", "100%");
-		this.eBack.setAttribute("height", "100%");
 		this.eRoot.appendChild(this.eBack);
 
 		// ****************** header ******************
@@ -83,14 +77,11 @@ Ned.Node = {
 		this.eHeader.addEventListener("mousedown", (e) => {	this.beginNodeDrag (e);	});
 
 		this.eHeaderBack = document.createElementNS(ned.svg.ns, "rect");
-		this.eHeaderBack.setAttribute("width", "100%");
-		this.eHeaderBack.setAttribute("height", headerSize);
 		this.eHeader.appendChild(this.eHeaderBack);
 		
 		this.eHeaderText = document.createElementNS(ned.svg.ns, "text");
 		this.eHeaderText.appendChild(document.createTextNode(sTitle));
 		this.eHeaderText.setAttribute("x", "50%");
-		this.eHeaderText.setAttribute("y", headerSize - 4); // padding to the bottom text
 		this.eHeader.appendChild(this.eHeaderText);
 
 		// ****************** inputs and outputs ******************
@@ -98,34 +89,17 @@ Ned.Node = {
 		this.eInputs.setAttribute("class", "Inputs");
 		this.eInputs.setAttribute("overflow", "visible");
 		this.eInputs.setAttribute("x", "0%");
-		this.eInputs.setAttribute("y", headerSize);
 		this.eRoot.appendChild(this.eInputs);
 
 		this.eOutputs = document.createElementNS(ned.svg.ns, "svg");
 		this.eOutputs.setAttribute("class", "Outputs");
 		this.eOutputs.setAttribute("overflow", "visible");
 		this.eOutputs.setAttribute("x", "100%");
-		this.eOutputs.setAttribute("y", headerSize);
 		this.eRoot.appendChild(this.eOutputs);
 
-		// ****************** foreign objects ******************
+		// ****************** foreign object ******************
 		this.eForeign = document.createElementNS(ned.svg.ns, "foreignObject");
-		this.eForeign.setAttribute("x", "16");
-		this.eForeign.setAttribute("y", headerSize);
 		this.eRoot.appendChild(this.eForeign);
-
-		// ****************** foreign object test ******************
-		this.eSelect = document.createElement("select");
-		this.eForeign.appendChild(this.eSelect);
-
-		for (let i = 0; i < 5; ++i)
-		{
-			var eOption = document.createElement("option");
-			eOption.text = "test " + i;
-			this.eSelect.appendChild(eOption);
-		}
-		this.eText = document.createElement("textarea");
-		this.eForeign.appendChild(this.eText);
 	},
 
 	addInput(name) {
@@ -142,9 +116,32 @@ Ned.Node = {
 		else this.outputs.push(conn);
 
 		conn.init(this, name, isInput);
-		//TODO resize / position foreign object
+		this.updateVisuals();
 
 		return conn;
+	},
+
+	updateVisuals() {
+		var rectRoot = this.eBack.getBoundingClientRect();
+		var rectHeader = this.eHeaderBack.getBoundingClientRect();
+		var rectInput = this.eInputs.getBoundingClientRect();
+		var rectOutput = this.eOutputs.getBoundingClientRect();
+
+		var headerSize = rectHeader.height;
+
+		this.eHeaderText.setAttribute("y", headerSize/2);
+		this.eInputs.setAttribute("y", headerSize);
+		this.eOutputs.setAttribute("y", headerSize);
+
+		var x = rectInput.right - rectRoot.left;
+		var w = rectOutput.left - rectInput.right;
+		var y = headerSize;
+		var h = rectRoot.height - headerSize;
+
+		this.eForeign.setAttribute("x", x);
+		this.eForeign.setAttribute("y", y);
+		this.eForeign.setAttribute("width", w);
+		this.eForeign.setAttribute("height", h);
 	},
 
 	updatePaths() {
@@ -170,20 +167,16 @@ Ned.Node = {
 		this.updatePaths();
 	},
 
-	get width() {
-		return this.eRoot.getAttribute("width");
+	get size() {
+		return {
+			width: this.eRoot.getAttribute("width"),
+			height: this.eRoot.getAttribute("height")
+		};
 	},
-	set width(v) {
-		this.eRoot.setAttribute("width", v);
-		//TODO resize / position foreign object
-	},
-
-	get height() {
-		return this.eRoot.getAttribute("height");
-	},
-	set height(v) {
-		this.eRoot.setAttribute("height", v);
-		//TODO resize / position foreign object
+	set size(size) {
+		this.eRoot.setAttribute("width", size.width);
+		this.eRoot.setAttribute("height", size.height);
+		this.updateVisuals();
 	},
 
 	toTop() {

@@ -1,0 +1,95 @@
+<html>
+<head>
+	<script src="ned.js"></script>
+	<link rel="stylesheet" type="text/css" href="ned.css">
+	<style type="text/css">	
+		body {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+		}
+
+		#svg {
+			position: absolute;
+			left: 20px;
+			top: 20px;
+			width: calc(100% - 42px);
+			height: calc(100% - 42px);
+			border: 1px solid #000;
+			cursor: crosshair;
+			/* disable text selection on svg */
+			-webkit-touch-callout: none; /* iOS Safari */
+			  -webkit-user-select: none; /* Chrome/Safari/Opera */
+			   -khtml-user-select: none; /* Konqueror */
+			     -moz-user-select: none; /* Firefox */
+			      -ms-user-select: none; /* Internet Explorer/Edge */
+			          user-select: none; /* Non-prefixed version, currently
+			                                not supported by any browser */
+		}
+
+		foreignObject {
+			background: #3F5262;
+		}
+		.nodeContent {
+			padding: 8px;
+		}
+
+		select {
+			width: 100%;
+		}
+
+	</style>
+</head>
+<body>
+	<svg id="svg" oncontextmenu="return false;">
+	</svg>
+
+	<script>
+		var editor = Ned.create("#svg");
+		editor.screenToWorld = function(pos) {
+			var rect = this.svg.getBoundingClientRect();
+
+			return { 
+				x: (pos.x - rect.left), 
+				y: (pos.y - rect.top)
+			};
+		};
+
+		// after setup create nodes		
+		var n1 = editor.createNode("Test node");
+		n1.position = { x: 100, y: 180};
+		n1.size = { width: 400, height: 200 };
+
+		var n1i1 = n1.addInput("");
+		var n1i2 = n1.addInput("Input B");
+
+		var n1o1 = n1.addOutput("Output A");
+		var n1o2 = n1.addOutput("Output B");
+
+		n1.eForeign.insertAdjacentHTML("afterbegin", 
+			`<div class="nodeContent">
+			<select>
+				<option>test 1</option>
+				<option>test 2</option>
+				<option>test 3</option>
+			</select>
+			<textarea>Text must come here</textarea>
+			</div>
+			`);
+
+		/*eSelect = document.createElement("select");
+		n1.eForeign.appendChild(eSelect);
+
+		for (let i = 0; i < 5; ++i)
+		{
+			var eOption = document.createElement("option");
+			eOption.text = "test " + i;
+			eSelect.appendChild(eOption);
+		}
+
+		eText = document.createElement("textarea");
+		n1.eForeign.appendChild(eText);*/
+
+	</script>
+</body>
+</html>
