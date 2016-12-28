@@ -8,6 +8,7 @@ The panning and zooming in the example uses [ariutta svg-pan-zoom](https://githu
 ## Examples
 * [Pan and zoom](https://depuits.github.io/ned/index.html)
 * [Dual pannels](https://depuits.github.io/ned/dual.html)
+* [Html content](https://depuits.github.io/ned/content.html)
 
 ## How To Use
 For a complete look on how everything works you can take a look at the [index.html](./index.html).
@@ -84,7 +85,26 @@ n1o1.connectTo(n2i1);
 Depending on the editor settings for `singleInputs` and `singleOutputs` the number of possible connections is limited.
 
 ## Customization
-Most of the visual customization can be done inside the [css](./ned.css). Other node customization like adding objects and changing size is work in progress.
+Most of the visual customization can be done inside the [css](./ned.css).
+
+Custom content can be added to the `eForeign` object. A working example can be found [here](https://depuits.github.io/ned/content.html).
+```javascript
+var n1 = editor.createNode("Test node");
+n1.position = { x: 100, y: 180};
+n1.size = { width: 400, height: 200 };
+
+n1.eForeign.insertAdjacentHTML("afterbegin", 
+  `<div class="nodeContent">
+  <select>
+    <option>test 1</option>
+    <option>test 2</option>
+    <option>test 3</option>
+  </select>
+  <textarea>Text must come here</textarea>
+  </div>
+  `);
+```
+
 
 ## SVG structure
 This is the default svg structure without any other libraries or other things in the svg. Except for the first ROOT svg element the structure is "`DOM object` ClassName".
