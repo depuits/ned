@@ -235,6 +235,7 @@ Ned.Node = {
 		console.log("clicked");
 		//TODO move selection logic more to the editor
 		//TODO rename the onClicked to something like deselectAll
+		//TODO move selection/multi select logic outside library
 		if (!e.ctrlKey) {
 			this.editor.onClicked (e);
 		}
