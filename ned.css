@@ -8,7 +8,7 @@
  */
 .Nodegroup > .NodeContainer.Selectable > .Background {
 	stroke: #B7C3F3;
-	stroke-width: 10px;
+	stroke-width: 2px;
 }
 .Nodegroup > .NodeContainer.Selected > .Background {
 	stroke: #B7C3F3;

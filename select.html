@@ -29,7 +29,7 @@
 	</style>
 </head>
 <body>
-	<svg id="svg" oncontextmenu="return false;">
+	<svg id="svg" oncontextmenu="return false;" tabindex="0">
 		<defs>
 			<pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
 				<path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
@@ -57,6 +57,17 @@
 				y: (pos.y - rect.top)
 			};
 		};
+
+		editor.svg.addEventListener("keyup", (e) => {
+			if (e.code == "Delete") {
+				//delete selected nodes
+				for (let n of editor.selectedNodes) {
+					//this is a memeory leak because no actual refference are removed
+					n.destroy();
+				}
+				editor.selectedNodes = [];
+			}
+		});
 
 		// after setup create nodes		
 		var n1 = editor.createNode("Test node");

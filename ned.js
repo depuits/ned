@@ -43,7 +43,7 @@ var Ned = {
 
 	onClicked(e) {
 		// remove all selected class
-		for (let n of this.selectedNodes) n.deselect();
+		for (let n of this.selectedNodes) n.removeSelectClass();
 		// reset the selected nodes list
 		this.selectedNodes = [];
 	},
@@ -73,7 +73,7 @@ Ned.Node = {
 		this.eRoot = document.createElementNS(ned.svg.ns, "svg");
 		this.eRoot.setAttribute("class", "NodeContainer");
 		this.eRoot.setAttribute("overflow", "visible");
-		ned.nodegroup.appendChild(this.eRoot);
+		this.editor.nodegroup.appendChild(this.eRoot);
 
 		// ****************** background ******************
 		this.eBack = document.createElementNS(ned.svg.ns, "rect");
@@ -84,7 +84,6 @@ Ned.Node = {
 		this.eHeader = document.createElementNS(ned.svg.ns, "g");
 		this.eHeader.setAttribute("class", "Header");
 		this.eRoot.appendChild(this.eHeader);
-		this.eHeader.addEventListener("mousedown", (e) => {	this.beginNodeDrag (e);	});
 
 		this.eHeaderBack = document.createElementNS(ned.svg.ns, "rect");
 		this.eHeader.appendChild(this.eHeaderBack);
@@ -112,8 +111,36 @@ Ned.Node = {
 		this.eRoot.appendChild(this.eForeign);
 
 		// selection events
+		this.eRoot.addEventListener("click", (e) => { this.onClicked(e); });
 		this.eRoot.addEventListener("mouseenter", (e) => { this.addHoverClass(); });
 		this.eRoot.addEventListener("mouseleave", (e) => { this.removeHoverClass(); });
+
+		this.eHeader.addEventListener("mousedown", (e) => { this.beginNodeDrag (e); });
+	},
+	destroy() {
+		//TODO make sure its no longer selected
+
+		//remove all connections
+		var tmpInputs = this.inputs.slice();
+		for(let c of tmpInputs) c.destroy();
+		delete this.inputs;
+		var tmpOutputs = this.outputs.slice();
+		for(let c of tmpOutputs) c.destroy();
+		delete this.outputs;
+
+		//remove dom elements
+		this.editor.nodegroup.removeChild(this.eRoot);
+		delete this.eRoot;
+		delete this.eBack;
+		delete this.eHeader;
+		delete this.eHeaderBack;
+		delete this.eHeaderText;
+		delete this.eInputs;
+		delete this.eOutputs;
+		delete this.eForeign;
+
+		// other references
+		delete this.editor;
 	},
 
 	addInput(name) {
@@ -133,6 +160,13 @@ Ned.Node = {
 		this.updateVisuals();
 
 		return conn;
+	},
+	removeConnection(conn) {
+		var list = (conn.isInput) ? this.inputs : this.outputs;
+		var index = list.indexOf(conn);
+		if(index != -1) {
+			list.splice(index, 1);
+		}
 	},
 
 	updateVisuals() {
@@ -194,8 +228,20 @@ Ned.Node = {
 	},
 
 	toTop() {
-		this.editor.nodegroup.removeChild(this.eRoot);
 		this.editor.nodegroup.appendChild(this.eRoot);
+	},
+
+	onClicked(e) {
+		console.log("clicked");
+		//TODO move selection logic more to the editor
+		//TODO rename the onClicked to something like deselectAll
+		if (!e.ctrlKey) {
+			this.editor.onClicked (e);
+		}
+
+		this.addSelectClass();
+		this.editor.selectedNodes.push(this);
+		e.stopPropagation();
 	},
 
 	addHoverClass() {
@@ -207,10 +253,10 @@ Ned.Node = {
 		this.removeClass("Selectable");
 	},
 
-	select() {
+	addSelectClass() {
 		this.addClass("Selected");
 	},
-	deselect() {
+	removeSelectClass() {
 		this.removeClass("Selected");
 	},
 
@@ -222,6 +268,8 @@ Ned.Node = {
 	},
 
 	beginNodeDrag(e) {
+		//TODO implement move of multiple selected nodes
+
 		// we can only drag when the left mouse button is pressed
 		if (e.button != 0) {
 			return;
@@ -230,6 +278,7 @@ Ned.Node = {
 		e.stopPropagation();
 
 		this.toTop();
+
 		var pos = this.position;
 		var screenPos = this.editor.screenToWorld({ x: e.pageX, y: e.pageY });
 		var offsetX = pos.x - screenPos.x;
@@ -286,6 +335,22 @@ Ned.Connector = {
 		this.eRoot.appendChild(this.eDot);
 
 		this.updatePosition();
+	},
+	destroy() {
+		// remove other references
+		this.node.removeConnection (this);
+		delete this.node;
+
+		//remove all linked paths
+		var tmpPaths = this.paths.slice();
+		for(let p of tmpPaths) p.destroy();
+		delete this.paths;
+
+		//remove dom elements
+		this.eRoot.parentNode.removeChild(this.eRoot);
+		delete this.eRoot;
+		delete this.eText;
+		delete this.eDot;
 	},
 
 	addHoverClass() {
@@ -442,12 +507,17 @@ Ned.Path = {
 		var pos = conn.position;
 		this.updateWithPos(pos);
 	},
-
 	destroy() {
 		if (this.input) this.input.removePath(this);
 		if (this.output) this.output.removePath(this);
+		//remove dom elements
 		this.editor.pathGroup.removeChild(this.ePath);
-		this.ePath = null;
+		delete this.ePath;
+
+		//removing all referencres
+		delete this.input;
+		delete this.output;
+		delete this.editor;
 	},
 
 	setFinalConn(conn) {
