@@ -7,8 +7,8 @@ The panning and zooming in the example uses [ariutta svg-pan-zoom](https://githu
 
 ## Examples
 * [Pan and zoom](https://depuits.github.io/ned/index.html)
-* [Dual pannels](https://depuits.github.io/ned/dual.html)
-* [Html content](https://depuits.github.io/ned/content.html)
+* [Dual pannels](https://depuits.github.io/ned/examples/dual.html)
+* [Html content](https://depuits.github.io/ned/examples/content.html)
 
 ## How To Use
 For a complete look on how everything works you can take a look at the [index.html](./index.html).
@@ -30,7 +30,7 @@ After creating an editor you can setup the options and create nodes.
 + `singleOutputs`: when `true` output connectors only allow a single connection. Default is `false`.
 + `screenToWorld`: function to translate screen coördinates to world coördinates. This is used to corectly position nodes and paths when you enable a pan and/or zoom on the svg. Default is `(pos) => { return pos; }`.
 
-The `screenToWorld` function should be correctly set before any connections are made. Any paths added before this will be drawn incorrectly. In this method the `this` object links to the editor trying to translate the position.
+The `screenToWorld` function should be correctly set before any connections are made. Any paths added before this will be drawn incorrectly. The caliing context of this method is the editor trying to translate the position.
 
 ScreenToWorld example with svg position offset.
 ```javascript
@@ -66,13 +66,15 @@ Nodes can simple be created by calling
 // create a new node
 var n1 = editor.createNode("Node title");
 
-// position the node
+// position and size the node
 n1.position = { x: 100, y: 180};
+n1.size = { width: 100, height: 60 };
 ```
 
 #### Connectors
 Connectors are the link points of the nodes. Any node can have as many or little connectors as needed. Connectors are split in two groups: input and output. To add connectors you call
 ```javascript
+// a node n1 was already created
 var n1i1 = n1.addInput("Input name");
 var n1o1 = n1.addOutput("Output name");
 ```
@@ -87,7 +89,7 @@ Depending on the editor settings for `singleInputs` and `singleOutputs` the numb
 ## Customization
 Most of the visual customization can be done inside the [css](./ned.css).
 
-Custom content can be added to the `eForeign` object. A working example can be found [here](https://depuits.github.io/ned/content.html).
+Custom content can be added to the `eForeign` object. A working example can be found [here](https://depuits.github.io/ned/examples/content.html).
 ```javascript
 var n1 = editor.createNode("Test node");
 n1.position = { x: 100, y: 180};
@@ -118,17 +120,17 @@ This is the default svg structure without any other libraries or other things in
   │   │   ├─ `g` Header  
   │   │   │   ├─ `rect`  
   │   │   │   └─ `text`  
-  │   │   ├─ `foreignObject`  
   │   │   ├─ `svg` Inputs  
   │   │   │   ├─ `svg` Input  
   │   │   │   │   ├─ `text`  
   │   │   │   │   └─ `circle`  
   │   │   │   └─ ...  
-  │   │   └─ `svg` Outputs  
-  │   │       ├─ `svg` Output  
-  │   │       │   ├─ `text`  
-  │   │       │   └─ `circle`  
-  │   │       └─ ...  
+  │   │   ├─ `svg` Outputs  
+  │   │   │   ├─ `svg` Output  
+  │   │   │   │   ├─ `text`  
+  │   │   │   │   └─ `circle`  
+  │   │   │   └─ ...  
+  │   │   └─ `foreignObject`  
   │   └─ ...  
   └─ `g` PathGroup  
       ├─ `path` Path  

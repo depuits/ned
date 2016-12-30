@@ -112,9 +112,6 @@ Ned.Node = {
 
 		// selection events
 		this.eRoot.addEventListener("click", (e) => { this.onClicked(e); });
-		this.eRoot.addEventListener("mouseenter", (e) => { this.addHoverClass(); });
-		this.eRoot.addEventListener("mouseleave", (e) => { this.removeHoverClass(); });
-
 		this.eHeader.addEventListener("mousedown", (e) => { this.beginNodeDrag (e); });
 	},
 	destroy() {
@@ -245,27 +242,11 @@ Ned.Node = {
 		e.stopPropagation();
 	},
 
-	addHoverClass() {
-		if (!this.editor.dragConn) {
-			this.addClass("Selectable");
-		}
-	},
-	removeHoverClass() {
-		this.removeClass("Selectable");
-	},
-
 	addSelectClass() {
-		this.addClass("Selected");
+		this.eRoot.classList.add("Selected");
 	},
 	removeSelectClass() {
-		this.removeClass("Selected");
-	},
-
-	addClass(className) {
-		this.eRoot.classList.add(className);
-	},
-	removeClass(className) {
-		this.eRoot.classList.remove(className);
+		this.eRoot.classList.remove("Selected");
 	},
 
 	beginNodeDrag(e) {

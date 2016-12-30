@@ -6,7 +6,7 @@
  * #DD7596
  * #CF1259
  */
-.Nodegroup > .NodeContainer.Selectable > .Background {
+.Nodegroup > .NodeContainer:hover > .Background {
 	stroke: #B7C3F3;
 	stroke-width: 2px;
 }
@@ -81,14 +81,14 @@
 	x: 100%;
 }
 
-.PathGroup > .Path { /* change to final container */
+.PathGroup > .Path {
 	stroke-dasharray: 20,5,5,5,5,5;
 	stroke-width: 2px;
 	stroke: #B7C3F3;
 	fill: none;
 }
 
-.PathGroup > .Path:hover { /* change to final container */
+.PathGroup > .Path:hover {
 	stroke-width: 3px;
 	stroke: #CF1259;
 	fill: none;
