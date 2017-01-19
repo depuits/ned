@@ -229,7 +229,6 @@ Ned.Node = {
 	},
 
 	onClicked(e) {
-		console.log("clicked");
 		//TODO move selection logic more to the editor
 		//TODO rename the onClicked to something like deselectAll
 		//TODO move selection/multi select logic outside library
@@ -253,7 +252,7 @@ Ned.Node = {
 		//TODO implement move of multiple selected nodes
 
 		// we can only drag when the left mouse button is pressed
-		if (e.button != 0) {
+		if (e.button !== 0) {
 			return;
 		}
 
@@ -351,7 +350,7 @@ Ned.Connector = {
 		var rect = this.eRoot.getBoundingClientRect();
 
 		var i = this.index;
-		var y = (rect.height) + (rect.height * 1.5 * i)
+		var y = (rect.height) + (rect.height * 1.5 * i);
 		this.eRoot.setAttribute("y", y);
 	},
 
@@ -408,7 +407,7 @@ Ned.Connector = {
 		}
 
 		if (!path) {
-			var path = Object.create(Ned.Path);
+			path = Object.create(Ned.Path);
 			path.init(this);
 		}
 		path.setFinalConn(conn);
@@ -429,7 +428,7 @@ Ned.Connector = {
 
 	beginConnDrag(e) {
 		// we can only drag when the left mouse button is pressed
-		if (e.button != 0) {
+		if (e.button !== 0) {
 			return;
 		}
 
@@ -447,7 +446,7 @@ Ned.Connector = {
 			var screenPos = this.editor.screenToWorld({ x: e.pageX, y: e.pageY });
 			var pos = {	x: screenPos.x, y: screenPos.y + mouseOffset };
 			path.updateWithPos(pos);
-		}
+		};
 		
 		var onConnDragMouseUp = (e) => {
 			e.stopPropagation();
@@ -516,7 +515,7 @@ Ned.Path = {
 
 	onClicked(e) {
 		// we can only drag when the left mouse button is pressed
-		if (e.button != 0) {
+		if (e.button !== 0) {
 			return;
 		}
 		
@@ -541,4 +540,4 @@ Ned.Path = {
 
 		this.ePath.setAttribute('d', str);
 	}
-}
+};
