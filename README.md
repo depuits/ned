@@ -3,7 +3,7 @@ Simple javascript node editor using svg graphics. A working example can be found
 
  Some **SVG2** features are required. Currently working and tested in **Chrome**. 
 
-The panning and zooming in the example uses [ariutta svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom) but any pan and/or zoom could be used.
+The panning and zooming in the example uses [svg-pan-zoom](https://github.com/bumbu/svg-pan-zoom) but any pan and/or zoom could be used.
 
 ## Examples
 * [Pan and zoom](https://depuits.github.io/ned/index.html)

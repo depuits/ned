@@ -1,7 +1,7 @@
 <html>
 <head>
 	<script src="ned.js"></script>
-	<script src="https://ariutta.github.io/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+	<script src="https://bumbu.github.io/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="ned.css">
 	<style type="text/css">	
 		body {
@@ -52,7 +52,7 @@
 			</pattern>
 		</defs>
 
-		<rect id="grid" width="200%" height="200%" fill="url(#bigGrid)" />
+		<rect id="grid" width="500%" height="500%" fill="url(#bigGrid)" />
 	</svg>
 
 	<script>
@@ -68,6 +68,14 @@
 			if (e.button !== 1) e.stopImmediatePropagation(); 
 		});
 
+		function updateGrid() {
+			var zoom = this.getZoom();
+			var pan = this.getPan();
+			grid.setAttribute("x", -pan.x / zoom);
+			grid.setAttribute("y", -pan.y / zoom);
+		}
+
+
 		editor.panZoom = svgPanZoom(editor.svg, {
 			viewportSelector: ".svg-pan-zoom_viewport", 
 			panEnabled: true, 
@@ -77,17 +85,14 @@
 			mouseWheelZoomEnabled: true, 
 			preventMouseEventsDefault: false, 
 			zoomScaleSensitivity: 0.2, 
-			minZoom: 0.5, 
-			maxZoom: 2, 
+			minZoom: 0.2, 
+			maxZoom: 10, 
 			fit: false, 
 			contain: false, 
 			center: false, 
 			refreshRate: "auto",
-			onPan: function(newPan) {
-				var zoom = this.getZoom();
-				grid.setAttribute("x", -newPan.x / zoom);
-				grid.setAttribute("y", -newPan.y / zoom);
-			}
+			onPan: updateGrid,
+			onZoom: updateGrid,
 		});
 
 		editor.screenToWorld = function(pos) {
