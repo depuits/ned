@@ -347,7 +347,7 @@ Ned.Connector = {
 	},
 
 	updatePosition() {
-		var rect = this.eRoot.getBoundingClientRect();
+		var rect = this.eDot.getBoundingClientRect();
 
 		var i = this.index;
 		var y = (rect.height) + (rect.height * 1.5 * i);
